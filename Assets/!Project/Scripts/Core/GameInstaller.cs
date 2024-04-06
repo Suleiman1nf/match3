@@ -1,6 +1,7 @@
 using _Project.Scripts.Core.Audio;
 using _Project.Scripts.Core.Save;
 using _Project.Scripts.Gameplay.Background;
+using _Project.Scripts.Gameplay.GridPlacement;
 using UnityEngine;
 using Zenject;
 
@@ -17,6 +18,7 @@ namespace _Project.Scripts.Core
             AudioServiceInstaller.Install(Container);
             BackgroundServiceInstaller.Install(Container);
             BalloonsSpawnServiceInstaller.Install(Container);
+            GridPlacementServiceInstaller.Install(Container);
         }
     }
 }
