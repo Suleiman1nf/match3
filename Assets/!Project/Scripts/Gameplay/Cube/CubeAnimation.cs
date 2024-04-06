@@ -10,7 +10,7 @@ namespace _Project.Scripts.Gameplay.Cube
     {
         private static readonly int DestroyParam = Animator.StringToHash("Destroy");
         private static readonly int Idle = Animator.StringToHash("Idle");
-        private const float IdleDelayMaxTime = 0.5f;
+        private const float IdleDelayMaxTime = 2f;
         private Animator _animator;
 
         private void Awake()
