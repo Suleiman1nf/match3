@@ -27,6 +27,7 @@ namespace _Project.Scripts.Core.Audio
         
         public void Init(AudioSave audioSave)
         {
+            _audioSave = audioSave;
             MuteMusic(_audioSave.musicMuted);
             MuteSoundEffects(_audioSave.soundMuted);
             MuteMaster(_audioSave.masterMuted);

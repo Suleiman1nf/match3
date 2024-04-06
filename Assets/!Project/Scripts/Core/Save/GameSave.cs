@@ -6,6 +6,6 @@ namespace _Project.Scripts.Core.Save
     [Serializable]
     public class GameSave
     {
-        public AudioSave AudioSave;
+        public AudioSave AudioSave = new AudioSave();
     }
 }

@@ -1,5 +1,6 @@
 using _Project.Scripts.Core.Audio;
 using _Project.Scripts.Core.Save;
+using _Project.Scripts.Gameplay.Background;
 using UnityEngine;
 using Zenject;
 
@@ -14,6 +15,7 @@ namespace _Project.Scripts.Core
             Container.Bind<GameSettings>().FromInstance(_gameSettings).AsSingle().NonLazy();
             SaveServiceInstaller.Install(Container);
             AudioServiceInstaller.Install(Container);
+            BackgroundServiceInstaller.Install(Container);
         }
     }
 }
