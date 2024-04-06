@@ -507,7 +507,7 @@ GameObject:
   - component: {fileID: 841107351}
   - component: {fileID: 841107352}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: GameBoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -541,7 +541,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _testBackground: {fileID: 6995614052913478543, guid: a42b9c913d7ffe844a71e383e422e30b, type: 3}
-  _testObj: {fileID: 2029598107}
+  _testObj: {fileID: 914102586772728267, guid: d11d728fa7a89d642b43efb022ad02dd, type: 3}
 --- !u!1 &880155924
 GameObject:
   m_ObjectHideFlags: 0

@@ -30,7 +30,7 @@ namespace _Project.Scripts.Gameplay.GridPlacement
                 {
                     GameObject go = Instantiate(prefab);
                     go.transform.position = GetPosition(i, j);
-                    go.transform.localScale = _grid.cellSize;
+                    go.transform.localScale *= _grid.cellSize.x;
                 }
             }
         }

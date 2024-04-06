@@ -8,7 +8,7 @@ using Zenject;
 
 namespace _Project.Scripts.Core
 {
-    public class GameManager : MonoBehaviour
+    public class GameBoot : MonoBehaviour
     {
         [SerializeField] private GameObject _testBackground;
         [SerializeField] private GameObject _testObj;
