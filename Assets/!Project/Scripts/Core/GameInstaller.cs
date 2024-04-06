@@ -1,3 +1,4 @@
+using _Project.Scripts.Core.Audio;
 using UnityEngine;
 using Zenject;
 
@@ -10,6 +11,7 @@ namespace _Project.Scripts.Core
         public override void InstallBindings()
         {
             Container.Bind<GameSettings>().FromInstance(_gameSettings).AsSingle().NonLazy();
+            AudioServiceInstaller.Install(Container);
         }
     }
 }
