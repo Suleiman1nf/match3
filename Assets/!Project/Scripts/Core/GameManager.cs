@@ -13,13 +13,15 @@ namespace _Project.Scripts.Core
         private SaveService _saveService;
         private AudioService _audioService;
         private BackgroundService _backgroundService;
+        private BalloonsSpawnService _balloonsSpawnService;
 
         [Inject]
-        public void Construct(SaveService saveService, AudioService audioService, BackgroundService backgroundService)
+        public void Construct(SaveService saveService, AudioService audioService, BackgroundService backgroundService, BalloonsSpawnService balloonsSpawnService)
         {
             _saveService = saveService;
             _audioService = audioService;
             _backgroundService = backgroundService;
+            _balloonsSpawnService = balloonsSpawnService;
         }
 
         public void Start()
@@ -27,6 +29,7 @@ namespace _Project.Scripts.Core
             _saveService.Load();
             _audioService.Init(_saveService.GameSave.AudioSave);
             _backgroundService.SetBackground(_testBackground);
+            _balloonsSpawnService.StartSpawning();
         }
     }
 }

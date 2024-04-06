@@ -16,6 +16,7 @@ namespace _Project.Scripts.Core
             SaveServiceInstaller.Install(Container);
             AudioServiceInstaller.Install(Container);
             BackgroundServiceInstaller.Install(Container);
+            BalloonsSpawnServiceInstaller.Install(Container);
         }
     }
 }
