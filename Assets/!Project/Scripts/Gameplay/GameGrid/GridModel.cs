@@ -1,4 +1,6 @@
-﻿namespace _Project.Scripts.Gameplay.GameGrid
+﻿using UnityEngine;
+
+namespace _Project.Scripts.Gameplay.GameGrid
 {
     public class GridModel
     {
@@ -20,6 +22,16 @@
         public int Get(int x, int y)
         {
             return _grid[x, y];
+        }
+
+        public bool IsEmptyAt(int x, int y)
+        {
+            return _grid[x, y] <= 0;
+        }
+        
+        public bool IsEmptyAt(Vector2Int pos)
+        {
+            return IsEmptyAt(pos.x, pos.y);
         }
     }
 }

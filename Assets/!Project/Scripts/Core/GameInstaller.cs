@@ -4,6 +4,7 @@ using _Project.Scripts.Gameplay.Background;
 using _Project.Scripts.Gameplay.Cube;
 using _Project.Scripts.Gameplay.GameLevel;
 using _Project.Scripts.Gameplay.GridPlacement;
+using _Project.Scripts.Gameplay.Movement;
 using UnityEngine;
 using Zenject;
 
@@ -23,6 +24,7 @@ namespace _Project.Scripts.Core
             GridPlacementServiceInstaller.Install(Container);
             CubeFactoryInstaller.Install(Container);
             LevelServiceInstaller.Install(Container);
+            GridMovementServiceInstaller.Install(Container);
         }
     }
 }

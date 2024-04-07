@@ -7,6 +7,7 @@ namespace _Project.Scripts.Gameplay.Cube
     {
         [SerializeField] private Transform _container;
         [SerializeField] private List<GameObject> _cubes;
+        public List<GameObject> Cubes => _cubes;
 
         public GameObject CreateCube(int index)
         {
