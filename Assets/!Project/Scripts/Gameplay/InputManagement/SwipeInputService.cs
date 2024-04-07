@@ -2,17 +2,16 @@
 using UnityEngine;
 using Zenject;
 
-namespace _Project.Scripts.Gameplay.Cube.Services
+namespace _Project.Scripts.Gameplay.InputManagement
 {
-    public class CubeSwipeInputService : IInitializable, ITickable
+    public class SwipeInputService : IInitializable, ITickable
     {
         private const float MinSwipeDistance = 40f;
         private Camera _camera;
 
         private Vector3 _startPosition;
-        private CubeGridData _swipingCubeData;
-
-        public event Action<CubeGridData, Vector2Int> OnSwipeCube;
+        private ISwipeable _swipeable;
+        public event Action<ISwipeable, Vector2Int> OnSwipe;
         
         public void Initialize()
         {
@@ -23,26 +22,26 @@ namespace _Project.Scripts.Gameplay.Cube.Services
         {
             if (Input.GetMouseButtonDown(0))
             {
-                _swipingCubeData = null;
+                _swipeable = null;
                 RaycastHit2D rayHit = Physics2D.GetRayIntersection(_camera.ScreenPointToRay(Input.mousePosition));
                 if (rayHit)
                 {
-                    if (rayHit.transform.TryGetComponent(out CubeGridData gridData))
+                    if (rayHit.transform.TryGetComponent(out ISwipeable swipeable))
                     {
                         _startPosition = Input.mousePosition;
-                        _swipingCubeData = gridData;
+                        _swipeable = swipeable;
                     }
                 }
             }
-            if (Input.GetMouseButtonUp(0) && _swipingCubeData != null)
+            if (Input.GetMouseButtonUp(0) && _swipeable != null)
             {
                 float distance = Vector3.Distance(Input.mousePosition, _startPosition);
                 Vector3 direction =  Input.mousePosition - _startPosition;
                 if (distance > MinSwipeDistance)
                 {
-                    OnSwipeCube?.Invoke(_swipingCubeData, GetSwipeDirection(direction));
+                    OnSwipe?.Invoke(_swipeable, GetSwipeDirection(direction));
                 }
-                _swipingCubeData = null;
+                _swipeable = null;
             }
         }
 

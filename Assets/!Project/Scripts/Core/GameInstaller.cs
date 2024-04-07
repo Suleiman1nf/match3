@@ -5,6 +5,7 @@ using _Project.Scripts.Gameplay.Cube.Services;
 using _Project.Scripts.Gameplay.GameGrid.Movement;
 using _Project.Scripts.Gameplay.GameGrid.Placement;
 using _Project.Scripts.Gameplay.GameLevel;
+using _Project.Scripts.Gameplay.InputManagement;
 using UnityEngine;
 using Zenject;
 
@@ -25,7 +26,7 @@ namespace _Project.Scripts.Core
             CubeFactoryInstaller.Install(Container);
             LevelServiceInstaller.Install(Container);
             GridServiceInstaller.Install(Container);
-            CubeSwipeInputServiceInstaller.Install(Container);
+            SwipeInputServiceInstaller.Install(Container);
             FallServiceInstaller.Install(Container);
             CubeGridMoveServiceInstaller.Install(Container);
             SwipeServiceInstaller.Install(Container);

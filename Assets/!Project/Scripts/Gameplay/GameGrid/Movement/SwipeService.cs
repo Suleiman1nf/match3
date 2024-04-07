@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using _Project.Scripts.Gameplay.Cube;
-using _Project.Scripts.Gameplay.Cube.Services;
+using _Project.Scripts.Gameplay.InputManagement;
 using UnityEngine;
 using Zenject;
 
@@ -9,30 +9,35 @@ namespace _Project.Scripts.Gameplay.GameGrid.Movement
 {
     public class SwipeService : IInitializable, IDisposable
     {
-        private readonly CubeSwipeInputService _cubeSwipeInputService;
+        private readonly SwipeInputService _swipeInputService;
         private readonly GridService _gridService;
-
         public event Action<List<MoveData>> OnSwipe;
 
-        public SwipeService(CubeSwipeInputService cubeSwipeInputService, GridService gridService)
+        public SwipeService(SwipeInputService swipeInputService, GridService gridService)
         {
-            _cubeSwipeInputService = cubeSwipeInputService;
+            _swipeInputService = swipeInputService;
             _gridService = gridService;
         }
         
         public void Initialize()
         {
-            _cubeSwipeInputService.OnSwipeCube += OnSwipeCube;
+            _swipeInputService.OnSwipe += OnSwipeInput;
         }
 
         public void Dispose()
         {
-            _cubeSwipeInputService.OnSwipeCube -= OnSwipeCube;
+            _swipeInputService.OnSwipe -= OnSwipeInput;
         }
 
-        private void OnSwipeCube(CubeGridData cubeGridData, Vector2Int direction)
+        private void OnSwipeInput(ISwipeable swipeable, Vector2Int direction)
         {
-            Vector2Int origin = cubeGridData.GetPosition();
+            CubeController cubeController = swipeable as CubeController;
+            if (cubeController == null)
+            {
+                return;
+            }
+            
+            Vector2Int origin = cubeController.CubeGridData.GetPosition();
             Vector2Int destination = origin + direction;
             if (_gridService.CanMoveTo(origin, direction))
             {
