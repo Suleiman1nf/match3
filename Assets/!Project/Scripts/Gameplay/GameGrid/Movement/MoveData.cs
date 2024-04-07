@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Project.Scripts.Gameplay.Movement
+namespace _Project.Scripts.Gameplay.GameGrid.Movement
 {
     public class MoveData
     {

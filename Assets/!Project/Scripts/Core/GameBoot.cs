@@ -2,9 +2,9 @@ using _Project.Scripts.Core.Audio;
 using _Project.Scripts.Core.Save;
 using _Project.Scripts.Gameplay.Background;
 using _Project.Scripts.Gameplay.GameGrid;
+using _Project.Scripts.Gameplay.GameGrid.Movement;
+using _Project.Scripts.Gameplay.GameGrid.Placement;
 using _Project.Scripts.Gameplay.GameLevel;
-using _Project.Scripts.Gameplay.GridPlacement;
-using _Project.Scripts.Gameplay.Movement;
 using UnityEngine;
 using Zenject;
 

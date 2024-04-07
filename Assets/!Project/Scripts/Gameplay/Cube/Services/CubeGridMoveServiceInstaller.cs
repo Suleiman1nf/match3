@@ -1,6 +1,6 @@
 ﻿using Zenject;
 
-namespace _Project.Scripts.Gameplay.Cube
+namespace _Project.Scripts.Gameplay.Cube.Services
 {
     public class CubeGridMoveServiceInstaller : Installer<CubeGridMoveServiceInstaller>
     {

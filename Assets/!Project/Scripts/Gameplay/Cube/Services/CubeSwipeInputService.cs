@@ -1,9 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-namespace _Project.Scripts.Gameplay.Cube
+namespace _Project.Scripts.Gameplay.Cube.Services
 {
-    public class CubeSwipeService : MonoBehaviour
+    public class CubeSwipeInputService : MonoBehaviour
     {
         private const float MinSwipeDistance = 40f;
         private Camera _camera;

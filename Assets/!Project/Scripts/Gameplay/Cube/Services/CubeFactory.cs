@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using _Project.Scripts.Gameplay.GridPlacement;
+using _Project.Scripts.Gameplay.GameGrid.Placement;
 using UnityEngine;
 using Zenject;
 
-namespace _Project.Scripts.Gameplay.Cube
+namespace _Project.Scripts.Gameplay.Cube.Services
 {
     public class CubeFactory : MonoBehaviour
     {

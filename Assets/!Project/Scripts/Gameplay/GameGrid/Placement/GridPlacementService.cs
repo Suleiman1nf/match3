@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Project.Scripts.Gameplay.GridPlacement
+namespace _Project.Scripts.Gameplay.GameGrid.Placement
 {
     public class GridPlacementService : MonoBehaviour
     {

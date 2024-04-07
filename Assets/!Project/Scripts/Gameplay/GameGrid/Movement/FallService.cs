@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using _Project.Scripts.Gameplay.GameGrid;
 using UnityEngine;
 using Zenject;
 
-namespace _Project.Scripts.Gameplay.Movement
+namespace _Project.Scripts.Gameplay.GameGrid.Movement
 {
     public class FallService : MonoBehaviour
     {

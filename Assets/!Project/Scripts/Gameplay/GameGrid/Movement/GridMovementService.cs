@@ -1,7 +1,6 @@
-﻿using _Project.Scripts.Gameplay.GameGrid;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace _Project.Scripts.Gameplay.Movement
+namespace _Project.Scripts.Gameplay.GameGrid.Movement
 {
     public class GridMovementService : MonoBehaviour
     {
