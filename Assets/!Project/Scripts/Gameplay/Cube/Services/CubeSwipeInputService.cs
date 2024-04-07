@@ -1,9 +1,10 @@
 ﻿using System;
 using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts.Gameplay.Cube.Services
 {
-    public class CubeSwipeInputService : MonoBehaviour
+    public class CubeSwipeInputService : IInitializable, ITickable
     {
         private const float MinSwipeDistance = 40f;
         private Camera _camera;
@@ -12,13 +13,13 @@ namespace _Project.Scripts.Gameplay.Cube.Services
         private CubeGridData _swipingCubeData;
 
         public event Action<CubeGridData, Vector2Int> OnSwipeCube;
-
-        private void Awake()
+        
+        public void Initialize()
         {
             _camera = Camera.main;
         }
         
-        public void Update()
+        public void Tick()
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -56,5 +57,7 @@ namespace _Project.Scripts.Gameplay.Cube.Services
                 return direction.y > 0 ? new Vector2Int(0, 1) : new Vector2Int(0, -1);
             }
         }
+
+
     }
 }

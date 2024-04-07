@@ -1,7 +1,6 @@
 using _Project.Scripts.Core.Audio;
 using _Project.Scripts.Core.Save;
 using _Project.Scripts.Gameplay.Background;
-using _Project.Scripts.Gameplay.Cube;
 using _Project.Scripts.Gameplay.Cube.Services;
 using _Project.Scripts.Gameplay.GameGrid.Movement;
 using _Project.Scripts.Gameplay.GameGrid.Placement;
@@ -25,7 +24,7 @@ namespace _Project.Scripts.Core
             GridPlacementServiceInstaller.Install(Container);
             CubeFactoryInstaller.Install(Container);
             LevelServiceInstaller.Install(Container);
-            GridMovementServiceInstaller.Install(Container);
+            GridServiceInstaller.Install(Container);
             CubeSwipeInputServiceInstaller.Install(Container);
             FallServiceInstaller.Install(Container);
             CubeGridMoveServiceInstaller.Install(Container);

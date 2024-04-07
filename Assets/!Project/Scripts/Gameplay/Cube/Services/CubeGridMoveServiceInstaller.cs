@@ -6,7 +6,7 @@ namespace _Project.Scripts.Gameplay.Cube.Services
     {
         public override void InstallBindings()
         {
-            Container.Bind<CubeGridMoveService>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<CubeGridMoveService>().FromNew().AsSingle();
         }
     }
 }

@@ -2,16 +2,14 @@
 using _Project.Scripts.Gameplay.GameGrid.Placement;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Zenject;
 
 namespace _Project.Scripts.Gameplay.Cube.Services
 {
-    public class CubeGridMoveService : MonoBehaviour
+    public class CubeGridMoveService
     {
-        private GridPlacementService _gridPlacementService;
+        private readonly GridPlacementService _gridPlacementService;
 
-        [Inject]
-        private void Construct(GridPlacementService gridPlacementService)
+        private CubeGridMoveService(GridPlacementService gridPlacementService)
         {
             _gridPlacementService = gridPlacementService;
         }

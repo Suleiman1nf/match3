@@ -6,7 +6,7 @@ namespace _Project.Scripts.Gameplay.Cube.Services
     {
         public override void InstallBindings()
         {
-            Container.Bind<CubeSwipeInputService>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<CubeSwipeInputService>().FromNew().AsSingle();
         }
     }
 }

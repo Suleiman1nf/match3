@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using _Project.Scripts.Gameplay.Cube;
 using _Project.Scripts.Gameplay.Cube.Services;
@@ -10,47 +11,51 @@ using Zenject;
 
 namespace _Project.Scripts.Gameplay.GameLevel
 {
-    public class LevelService : MonoBehaviour
+    public class LevelService : IInitializable, IDisposable
     {
-        private SwipeService _swipeService;
-        private CubeFactory _cubeFactory;
-        private CubeGridMoveService _cubeMoveService;
-        private FallService _fallService;
-        private GridModel _grid;
+        private readonly SwipeService _swipeService;
+        private readonly CubeFactory _cubeFactory;
+        private readonly CubeGridMoveService _cubeMoveService;
+        private readonly FallService _fallService;
+        private readonly GridService _gridService;
+        private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        
+        private GridModel Grid => _gridService.GridModel;
 
-        [Inject]
-        private void Construct(SwipeService swipeService, 
+        private LevelService(
+            GridService gridService,
+            SwipeService swipeService, 
             CubeFactory cubeFactory,
             CubeGridMoveService cubeGridMoveService,
             FallService fallService)
         {
+            _gridService = gridService;
             _swipeService = swipeService;
             _cubeMoveService = cubeGridMoveService;
             _cubeFactory = cubeFactory;
             _fallService = fallService;
         }
 
-        private void Awake()
+        public void Initialize()
         {
             _swipeService.OnSwipe += OnSwipeInputCube;
         }
 
-        private void OnDestroy()
+        public void Dispose()
         {
             _swipeService.OnSwipe -= OnSwipeInputCube;
+            _cancellationTokenSource?.Dispose();
         }
 
-        public void Load(GridModel grid)
+        public void Load()
         {
-            _grid = grid;
-            
-            for (int i = 0; i < _grid.SizeX; i++)
+            for (int i = 0; i < Grid.SizeX; i++)
             {
-                for (int j = 0; j < _grid.SizeY; j++)
+                for (int j = 0; j < Grid.SizeY; j++)
                 {
-                    if (!_grid.IsEmptyAt(i, j))
+                    if (!Grid.IsEmptyAt(i, j))
                     {
-                        _cubeFactory.CreateCube(_grid.Get(i, j), new Vector2Int(i, j));
+                        _cubeFactory.CreateCube(Grid.Get(i, j), new Vector2Int(i, j));
                     }
                 }
             }
@@ -58,14 +63,14 @@ namespace _Project.Scripts.Gameplay.GameLevel
 
         private async void OnSwipeInputCube(List<MoveData> moves)
         {
-            await MoveAll(moves, this.GetCancellationTokenOnDestroy());
+            await MoveAll(moves, _cancellationTokenSource.Token);
             FallProcess();
         }
 
         private void FallProcess()
         {
             List<MoveData> moves = _fallService.ProcessFall();
-            MoveAll(moves, this.GetCancellationTokenOnDestroy()).Forget();
+            MoveAll(moves, _cancellationTokenSource.Token).Forget();
         }
 
         private async UniTask MoveAll(List<MoveData> moves, CancellationToken cancellationToken)

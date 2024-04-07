@@ -2,11 +2,11 @@
 
 namespace _Project.Scripts.Gameplay.GameGrid.Movement
 {
-    public class FallServiceInstaller : Installer<FallServiceInstaller>
+    public class GridServiceInstaller : Installer<GridServiceInstaller>
     {
         public override void InstallBindings()
         {
-            Container.Bind<FallService>().FromNew().AsSingle();
+            Container.Bind<GridService>().FromNew().AsSingle();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace _Project.Scripts.Gameplay.GameGrid.Movement
     {
         public override void InstallBindings()
         {
-            Container.Bind<SwipeService>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<SwipeService>().FromNew().AsSingle();
         }
     }
 }

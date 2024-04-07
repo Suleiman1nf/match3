@@ -6,7 +6,7 @@ namespace _Project.Scripts.Gameplay.GameLevel
     {
         public override void InstallBindings()
         {
-            Container.Bind<LevelService>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<LevelService>().FromNew().AsSingle();
         }
     }
 }

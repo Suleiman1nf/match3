@@ -7,26 +7,25 @@ using Zenject;
 
 namespace _Project.Scripts.Gameplay.GameGrid.Movement
 {
-    public class SwipeService : MonoBehaviour
+    public class SwipeService : IInitializable, IDisposable
     {
-        private CubeSwipeInputService _cubeSwipeInputService;
-        private GridMovementService _gridMovementService;
+        private readonly CubeSwipeInputService _cubeSwipeInputService;
+        private readonly GridService _gridService;
 
         public event Action<List<MoveData>> OnSwipe;
-        
-        [Inject]
-        private void Construct(CubeSwipeInputService cubeSwipeInputService, GridMovementService gridMovementService)
+
+        public SwipeService(CubeSwipeInputService cubeSwipeInputService, GridService gridService)
         {
             _cubeSwipeInputService = cubeSwipeInputService;
-            _gridMovementService = gridMovementService;
+            _gridService = gridService;
         }
-
-        private void Awake()
+        
+        public void Initialize()
         {
             _cubeSwipeInputService.OnSwipeCube += OnSwipeCube;
         }
 
-        private void OnDestroy()
+        public void Dispose()
         {
             _cubeSwipeInputService.OnSwipeCube -= OnSwipeCube;
         }
@@ -35,10 +34,10 @@ namespace _Project.Scripts.Gameplay.GameGrid.Movement
         {
             Vector2Int origin = cubeGridData.GetPosition();
             Vector2Int destination = origin + direction;
-            if (_gridMovementService.CanMoveTo(origin, direction))
+            if (_gridService.CanMoveTo(origin, direction))
             {
                 List<MoveData> moves = new List<MoveData>();
-                _gridMovementService.SwapValues(origin, destination);
+                _gridService.SwapValues(origin, destination);
                 moves.Add(new MoveData(origin, destination));
                 moves.Add(new MoveData(destination, origin));
                 OnSwipe?.Invoke(moves);
