@@ -1,22 +1,43 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using _Project.Scripts.Gameplay.GridPlacement;
 using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts.Gameplay.Cube
 {
     public class CubeFactory : MonoBehaviour
     {
         [SerializeField] private Transform _container;
-        [SerializeField] private List<GameObject> _cubes;
-        public List<GameObject> Cubes => _cubes;
+        [SerializeField] private List<CubeController> _cubes;
 
-        public GameObject CreateCube(int index)
+        private List<CubeController> _createdCubes = new List<CubeController>();
+        
+        private GridPlacementService _gridPlacementService;
+
+        [Inject]
+        public void Construct(GridPlacementService gridPlacementService)
         {
-            GameObject prefab = GetCubePrefabById(index);
-            GameObject obj = Instantiate(prefab, _container);
-            return obj;
+            _gridPlacementService = gridPlacementService;
+        }
+
+        public CubeController CreateCube(int index, Vector2Int position)
+        {
+            CubeController prefab = GetCubePrefabById(index);
+            CubeController cube = Instantiate(prefab, _container);
+            cube.transform.position = _gridPlacementService.GetPosition(position);
+            cube.CubeGridData.SetPosition(position);
+            _createdCubes.Add(cube);
+            return cube;
+        }
+
+        public bool TryGetCube(Vector2Int pos, out CubeController cubeController)
+        {
+            cubeController = _createdCubes.FirstOrDefault((x)=>x.CubeGridData.GetPosition() == pos);
+            return cubeController != null;
         }
         
-        private GameObject GetCubePrefabById(int index)
+        private CubeController GetCubePrefabById(int index)
         {
             return _cubes[index-1];
         }

@@ -27,6 +27,11 @@ namespace _Project.Scripts.Gameplay.GridPlacement
             return _grid.GetCellCenterWorld(new Vector3Int(x, y));
         }
 
+        public Vector2 GetPosition(Vector2Int pos)
+        {
+            return GetPosition(pos.x, pos.y);
+        }
+
         private void SetCellSize()
         {
             float unitsPerPixel = _camera.orthographicSize * 2 / Screen.height;

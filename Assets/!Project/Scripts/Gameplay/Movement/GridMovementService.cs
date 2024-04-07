@@ -36,7 +36,7 @@ namespace _Project.Scripts.Gameplay.Movement
 
         private bool InBounds(Vector2Int pos)
         {
-            return pos.x < _gridModel.SizeX && pos.x >= 0 && pos.y < _gridModel.SizeY && pos.y > 0;
+            return pos.x < _gridModel.SizeX && pos.x >= 0 && pos.y < _gridModel.SizeY && pos.y >= 0;
         }
         
         private bool IsDirectionUp(Vector2Int direction)

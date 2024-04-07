@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2864032715247250214}
   - component: {fileID: 9217452160838318991}
   - component: {fileID: 3150276945443809210}
+  - component: {fileID: 6295667297295763564}
   - component: {fileID: 8515590862748453412}
   - component: {fileID: 5841840201681219228}
   - component: {fileID: 1128996343618615555}
@@ -110,6 +111,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6295667297295763564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476143930515883595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed16c04c33db4f2cadd5f4d0ca9d2885, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <CubeAnimation>k__BackingField: {fileID: 8515590862748453412}
+  <CubeGridData>k__BackingField: {fileID: 1128996343618615555}
+  <CubeMovement>k__BackingField: {fileID: 5841840201681219228}
 --- !u!114 &8515590862748453412
 MonoBehaviour:
   m_ObjectHideFlags: 0

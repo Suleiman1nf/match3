@@ -169,8 +169,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _container: {fileID: 1194675059}
   _cubes:
-  - {fileID: 1476143930515883595, guid: 94873152ba5aa174e8ed63256bda383f, type: 3}
-  - {fileID: 6980478261949282500, guid: 89331616d6c8beb478e7c0ce54ada825, type: 3}
+  - {fileID: 6295667297295763564, guid: 94873152ba5aa174e8ed63256bda383f, type: 3}
+  - {fileID: 2593306917400393443, guid: 89331616d6c8beb478e7c0ce54ada825, type: 3}
 --- !u!1 &80838674
 GameObject:
   m_ObjectHideFlags: 0

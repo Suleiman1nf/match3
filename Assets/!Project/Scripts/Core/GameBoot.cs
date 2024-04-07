@@ -22,6 +22,7 @@ namespace _Project.Scripts.Core
         private BalloonsSpawnService _balloonsSpawnService;
         private LevelService _levelService;
         private GridMovementService _gridMovementService;
+        private GridPlacementService _gridPlacementService;
 
         [Inject]
         public void Construct(SaveService saveService, 
@@ -29,7 +30,8 @@ namespace _Project.Scripts.Core
             BackgroundService backgroundService, 
             BalloonsSpawnService balloonsSpawnService,
             LevelService levelService,
-            GridMovementService gridMovementService)
+            GridMovementService gridMovementService,
+            GridPlacementService gridPlacementService)
         {
             _saveService = saveService;
             _audioService = audioService;
@@ -37,6 +39,7 @@ namespace _Project.Scripts.Core
             _balloonsSpawnService = balloonsSpawnService;
             _levelService = levelService;
             _gridMovementService = gridMovementService;
+            _gridPlacementService = gridPlacementService;
         }
 
         public void Start()
@@ -47,6 +50,7 @@ namespace _Project.Scripts.Core
             _balloonsSpawnService.StartSpawning();
             GridModel model = GridParser.FromData(_level.text);
             _gridMovementService.Init(model);
+            _gridPlacementService.Init(model.SizeX, model.SizeY);
             _levelService.Load(model);
         }
     }
