@@ -2,16 +2,15 @@
 {
     public class GridModel
     {
-        private readonly int _rows;
-        private readonly int _columns;
         private readonly int[,] _grid;
 
-        public GridModel(int rows, int columns)
+        public GridModel(int[,] arr)
         {
-            _rows = rows;
-            _columns = columns;
-            _grid = new int[_rows, _columns];
+            _grid = arr;
         }
+
+        public int SizeX => _grid.GetLength(0);
+        public int SizeY => _grid.GetLength(1);
 
         public void Set(int x, int y, int value)
         {

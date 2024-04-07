@@ -1,6 +1,8 @@
 using _Project.Scripts.Core.Audio;
 using _Project.Scripts.Core.Save;
 using _Project.Scripts.Gameplay.Background;
+using _Project.Scripts.Gameplay.Cube;
+using _Project.Scripts.Gameplay.GameLevel;
 using _Project.Scripts.Gameplay.GridPlacement;
 using UnityEngine;
 using Zenject;
@@ -19,6 +21,8 @@ namespace _Project.Scripts.Core
             BackgroundServiceInstaller.Install(Container);
             BalloonsSpawnServiceInstaller.Install(Container);
             GridPlacementServiceInstaller.Install(Container);
+            CubeFactoryInstaller.Install(Container);
+            LevelServiceInstaller.Install(Container);
         }
     }
 }
