@@ -1,31 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using _Project.Scripts.Gameplay.GameGrid.Placement;
+using _Project.Scripts.Gameplay.GameGrid.World;
 using UnityEngine;
 using Zenject;
 
 namespace _Project.Scripts.Gameplay.Cube.Services
 {
-    public class CubeFactory : MonoBehaviour
+    public class CubeFactory
     {
-        [SerializeField] private Transform _container;
-        [SerializeField] private List<CubeController> _cubes;
+        private Settings _settings;
 
         private List<CubeController> _createdCubes = new List<CubeController>();
         
-        private GridPlacementService _gridPlacementService;
+        private WorldGridService _worldGridService;
 
         [Inject]
-        public void Construct(GridPlacementService gridPlacementService)
+        public void Construct(WorldGridService worldGridService, Settings settings)
         {
-            _gridPlacementService = gridPlacementService;
+            _worldGridService = worldGridService;
+            _settings = settings;
         }
 
-        public CubeController CreateCube(int index, Vector2Int position)
+        public CubeController CreateCube(int cubeId, Vector2Int position)
         {
-            CubeController prefab = GetCubePrefabById(index);
-            CubeController cube = Instantiate(prefab, _container);
-            cube.transform.position = _gridPlacementService.GetPosition(position);
+            CubeController prefab = GetCubePrefabById(cubeId);
+            CubeController cube = GameObject.Instantiate(prefab, _settings.Container);
+            cube.transform.position = _worldGridService.GetPosition(position);
             cube.CubeGridData.SetPosition(position);
             _createdCubes.Add(cube);
             return cube;
@@ -39,7 +40,14 @@ namespace _Project.Scripts.Gameplay.Cube.Services
         
         private CubeController GetCubePrefabById(int index)
         {
-            return _cubes[index-1];
+            return _settings.CubePrefabs[index-1];
+        }
+
+        [Serializable]
+        public class Settings
+        {
+            [field: SerializeField] public Transform Container { get; private set; }
+            [field: SerializeField] public List<CubeController> CubePrefabs { get; private set; }
         }
     }
 }

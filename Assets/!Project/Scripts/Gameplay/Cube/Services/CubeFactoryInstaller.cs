@@ -2,11 +2,18 @@
 
 namespace _Project.Scripts.Gameplay.Cube.Services
 {
-    public class CubeFactoryInstaller : Installer<CubeFactoryInstaller>
+    public class CubeFactoryInstaller : Installer<CubeFactory.Settings, CubeFactoryInstaller>
     {
+        private CubeFactory.Settings _settings;
+
+        public CubeFactoryInstaller(CubeFactory.Settings settings)
+        {
+            _settings = settings;
+        }
+
         public override void InstallBindings()
         {
-            Container.Bind<CubeFactory>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<CubeFactory>().FromNew().AsSingle().WithArguments(_settings);
         }
     }
 }

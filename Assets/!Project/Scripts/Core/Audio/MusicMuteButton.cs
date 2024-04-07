@@ -15,7 +15,7 @@
 
         protected override void RemoveListener()
         {
-            if (AudioService)
+            if (AudioService != null)
             {
                 AudioService.OnMuteMusic -= OnMute;
             }

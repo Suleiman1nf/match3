@@ -2,11 +2,18 @@
 
 namespace _Project.Scripts.Gameplay.Background
 {
-    public class BalloonsSpawnServiceInstaller : Installer<BalloonsSpawnServiceInstaller>
+    public class BalloonsSpawnServiceInstaller : Installer<BalloonsSpawnService.Settings, BalloonsSpawnServiceInstaller>
     {
+        private BalloonsSpawnService.Settings _settings;
+
+        public BalloonsSpawnServiceInstaller(BalloonsSpawnService.Settings settings)
+        {
+            _settings = settings;
+        }
+
         public override void InstallBindings()
         {
-            Container.Bind<BalloonsSpawnService>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<BalloonsSpawnService>().FromNew().AsSingle().WithArguments(_settings);
         }
     }
 }

@@ -63,17 +63,17 @@ namespace _Project.Scripts.Gameplay.GameLevel
 
         private async void OnSwipeInputCube(List<MoveData> moves)
         {
-            await MoveAll(moves, _cancellationTokenSource.Token);
+            await MoveCubes(moves, _cancellationTokenSource.Token);
             FallProcess();
         }
 
         private void FallProcess()
         {
             List<MoveData> moves = _fallService.ProcessFall();
-            MoveAll(moves, _cancellationTokenSource.Token).Forget();
+            MoveCubes(moves, _cancellationTokenSource.Token).Forget();
         }
 
-        private async UniTask MoveAll(List<MoveData> moves, CancellationToken cancellationToken)
+        private async UniTask MoveCubes(List<MoveData> moves, CancellationToken cancellationToken)
         {
             List<CubeController> cubes = new List<CubeController>();
             List<UniTask> tasks = new List<UniTask>();

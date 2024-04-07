@@ -3,7 +3,7 @@ using _Project.Scripts.Core.Save;
 using _Project.Scripts.Gameplay.Background;
 using _Project.Scripts.Gameplay.GameGrid;
 using _Project.Scripts.Gameplay.GameGrid.Movement;
-using _Project.Scripts.Gameplay.GameGrid.Placement;
+using _Project.Scripts.Gameplay.GameGrid.World;
 using _Project.Scripts.Gameplay.GameLevel;
 using UnityEngine;
 using Zenject;
@@ -18,39 +18,39 @@ namespace _Project.Scripts.Core
         
         private SaveService _saveService;
         private AudioService _audioService;
-        private BackgroundService _backgroundService;
+        private BackgroundImageService _backgroundImageService;
         private BalloonsSpawnService _balloonsSpawnService;
         private LevelService _levelService;
         private GridService _gridService;
-        private GridPlacementService _gridPlacementService;
+        private WorldGridService _worldGridService;
 
         [Inject]
         public void Construct(SaveService saveService, 
             AudioService audioService, 
-            BackgroundService backgroundService, 
+            BackgroundImageService backgroundImageService, 
             BalloonsSpawnService balloonsSpawnService,
             LevelService levelService,
             GridService gridService,
-            GridPlacementService gridPlacementService)
+            WorldGridService worldGridService)
         {
             _saveService = saveService;
             _audioService = audioService;
-            _backgroundService = backgroundService;
+            _backgroundImageService = backgroundImageService;
             _balloonsSpawnService = balloonsSpawnService;
             _levelService = levelService;
             _gridService = gridService;
-            _gridPlacementService = gridPlacementService;
+            _worldGridService = worldGridService;
         }
 
         public void Start()
         {
             _saveService.Load();
             _audioService.Init(_saveService.GameSave.AudioSave);
-            _backgroundService.SetBackground(_testBackground);
+            _backgroundImageService.SetBackground(_testBackground);
             _balloonsSpawnService.StartSpawning();
             GridModel model = GridParser.FromData(_level.text);
             _gridService.Init(model);
-            _gridPlacementService.Init(model.SizeX, model.SizeY);
+            _worldGridService.Init(model.SizeX, model.SizeY);
             _levelService.Load();
         }
     }

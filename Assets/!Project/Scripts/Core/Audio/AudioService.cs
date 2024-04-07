@@ -4,27 +4,29 @@ using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Core.Audio
 {
-    public class AudioService : MonoBehaviour
+    public class AudioService
     {
         private const string MasterVolumeParam = "MasterVolume";
         private const string MusicVolumeParam = "MusicVolume";
         private const string SoundVolumeParam = "SoundVolume";
         private const float MinVolume = 0.0001f;
-
-        [field: SerializeField] public GameAudioData Data { get; private set; }
-        [SerializeField] private AudioSource _musicAudio;
-        [SerializeField] private AudioSource _effectsAudio;
-
         public event Action<bool> OnMuteMaster;
         public event Action<bool> OnMuteMusic;
         public event Action<bool> OnMuteSound;
-
+        
+        private AudioSave _audioSave;
+        private Settings _settings;
+        
         public bool IsSoundMuted => _audioSave.soundMuted;
         public bool IsMusicMuted => _audioSave.musicMuted;
         public bool IsMasterMuted => _audioSave.masterMuted;
+        public GameAudioData AudioData => _settings.Data;
 
-        private AudioSave _audioSave;
-        
+        public AudioService(Settings settings)
+        {
+            _settings = settings;
+        }
+
         public void Init(AudioSave audioSave)
         {
             _audioSave = audioSave;
@@ -35,18 +37,18 @@ namespace _Project.Scripts.Core.Audio
         
         public void PlayMusic(int musicId)
         {
-            _musicAudio.clip = Data.MusicContainer[musicId];
-            _musicAudio.Play();
+            _settings.MusicAudio.clip = _settings.Data.MusicContainer[musicId];
+            _settings.MusicAudio.Play();
         }
 
         public void PlayRandomMusic()
         {
-            PlayMusic(Random.Range(0, Data.MusicContainer.Count));
+            PlayMusic(Random.Range(0, _settings.Data.MusicContainer.Count));
         }
 
         public void PlayEffect(AudioClip clip, float volume = 1)
         {
-            _effectsAudio.PlayOneShot(clip, volume);
+            _settings.EffectsAudio.PlayOneShot(clip, volume);
         }
 
         public void MuteMaster(bool state)
@@ -72,7 +74,7 @@ namespace _Project.Scripts.Core.Audio
 
         public void StopMusic()
         {
-            _musicAudio.Stop();
+            _settings.MusicAudio.Stop();
         }
 
         private void ChangeSoundVolume(float volume)
@@ -94,7 +96,15 @@ namespace _Project.Scripts.Core.Audio
         {
             volume = Mathf.Clamp(volume, MinVolume, 1f);
             volume = Mathf.Log10(volume) * 20f;
-            Data.AudioMixer.SetFloat(param, volume);
+            _settings.Data.AudioMixer.SetFloat(param, volume);
+        }
+
+        [Serializable]
+        public class Settings
+        {
+            [field: SerializeField] public GameAudioData Data { get; private set; }
+            [field: SerializeField] public AudioSource MusicAudio { get; private set; }
+            [field: SerializeField] public AudioSource EffectsAudio { get; private set; }
         }
     }
 }
