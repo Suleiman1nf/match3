@@ -10,7 +10,7 @@ namespace _Project.Scripts.Gameplay.Cube
         private const float MoveDuration = 0.5f;
         private const Ease MoveEase = Ease.OutBack;
 
-        public async UniTaskVoid MoveAsync(Vector3 destination, CancellationToken cancellationToken)
+        public async UniTask MoveAsync(Vector3 destination, CancellationToken cancellationToken)
         {
             await transform.DOMove(destination, MoveDuration).SetEase(MoveEase).WithCancellation(cancellationToken);
         }

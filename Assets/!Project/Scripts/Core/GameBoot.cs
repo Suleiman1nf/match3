@@ -23,6 +23,7 @@ namespace _Project.Scripts.Core
         private LevelService _levelService;
         private GridMovementService _gridMovementService;
         private GridPlacementService _gridPlacementService;
+        private FallService _fallService;
 
         [Inject]
         public void Construct(SaveService saveService, 
@@ -31,7 +32,8 @@ namespace _Project.Scripts.Core
             BalloonsSpawnService balloonsSpawnService,
             LevelService levelService,
             GridMovementService gridMovementService,
-            GridPlacementService gridPlacementService)
+            GridPlacementService gridPlacementService,
+            FallService fallService)
         {
             _saveService = saveService;
             _audioService = audioService;
@@ -40,6 +42,7 @@ namespace _Project.Scripts.Core
             _levelService = levelService;
             _gridMovementService = gridMovementService;
             _gridPlacementService = gridPlacementService;
+            _fallService = fallService;
         }
 
         public void Start()
@@ -51,6 +54,7 @@ namespace _Project.Scripts.Core
             GridModel model = GridParser.FromData(_level.text);
             _gridMovementService.Init(model);
             _gridPlacementService.Init(model.SizeX, model.SizeY);
+            _fallService.Init(model);
             _levelService.Load(model);
         }
     }

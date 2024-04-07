@@ -26,6 +26,8 @@ namespace _Project.Scripts.Core
             LevelServiceInstaller.Install(Container);
             GridMovementServiceInstaller.Install(Container);
             CubeSwipeServiceInstaller.Install(Container);
+            FallServiceInstaller.Install(Container);
+            CubeGridMoveServiceInstaller.Install(Container);
         }
     }
 }
