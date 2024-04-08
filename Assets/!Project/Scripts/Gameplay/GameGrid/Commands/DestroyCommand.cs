@@ -9,13 +9,19 @@ namespace _Project.Scripts.Gameplay.GameGrid.Commands
 {
     public class DestroyCommand : Command
     {
-        private CubeFactory _cubeFactory;
+        private readonly CubeFactory _cubeFactory;
+        
         private List<Vector2Int> _matches;
 
-        public DestroyCommand(List<Vector2Int> matches, CubeFactory cubeFactory)
+        public DestroyCommand(CubeFactory cubeFactory)
+        {
+            _cubeFactory = cubeFactory;
+        }
+
+        public DestroyCommand Init(List<Vector2Int> matches)
         {
             _matches = matches;
-            _cubeFactory = cubeFactory;
+            return this;
         }
 
         public override async UniTask Execute(CancellationToken cancellationToken)

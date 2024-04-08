@@ -5,6 +5,7 @@ using _Project.Scripts.Gameplay.Background;
 using _Project.Scripts.Gameplay.Cube.Services;
 using _Project.Scripts.Gameplay.GameGrid;
 using _Project.Scripts.Gameplay.GameGrid.Behaviours;
+using _Project.Scripts.Gameplay.GameGrid.Commands;
 using _Project.Scripts.Gameplay.GameGrid.World;
 using _Project.Scripts.Gameplay.GameLevel;
 using _Project.Scripts.Gameplay.InputManagement;
@@ -37,6 +38,7 @@ namespace _Project.Scripts.Core
             CubeGridMoveServiceInstaller.Install(Container);
             SwapServiceInstaller.Install(Container);
             MatchServiceInstaller.Install(Container);
+            CommandFactoryInstaller.Install(Container);
         }
     }
 }

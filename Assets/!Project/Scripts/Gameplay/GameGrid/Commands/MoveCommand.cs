@@ -9,17 +9,23 @@ namespace _Project.Scripts.Gameplay.GameGrid.Commands
 {
     public class MoveCommand : Command
     {
+        private readonly CubeFactory _cubeFactory;
+        private readonly CubeGridMoveService _cubeGridMoveService;
+        
         private List<MoveData> _moves;
-        private CubeFactory _cubeFactory;
-        private CubeGridMoveService _cubeGridMoveService;
         private MoveType _moveType;
+        
+        private MoveCommand(CubeFactory cubeFactory, CubeGridMoveService cubeGridMoveService)
+        {
+            _cubeFactory = cubeFactory;
+            _cubeGridMoveService = cubeGridMoveService;
+        }
 
-        public MoveCommand(List<MoveData> moves, MoveType moveType, CubeFactory cubeFactory, CubeGridMoveService cubeGridMoveService)
+        public MoveCommand Init(List<MoveData> moves, MoveType moveType)
         {
             _moves = moves;
             _moveType = moveType;
-            _cubeFactory = cubeFactory;
-            _cubeGridMoveService = cubeGridMoveService;
+            return this;
         }
 
         public override async UniTask Execute(CancellationToken cancellationToken)

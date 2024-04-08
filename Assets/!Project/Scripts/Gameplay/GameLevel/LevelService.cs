@@ -18,29 +18,28 @@ namespace _Project.Scripts.Gameplay.GameLevel
     {
         private readonly SwipeInputService _swipeInputService;
         private readonly CubeFactory _cubeFactory;
-        private readonly CubeGridMoveService _cubeMoveService;
         private readonly SwapService _swapService;
         private readonly FallService _fallService;
         private readonly MatchService _matchService;
+        private readonly CommandFactory _commandFactory;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-
-        private List<CommandsContainer> _runningCommands = new List<CommandsContainer>();
+        private readonly List<CommandsContainer> _runningCommands = new List<CommandsContainer>();
         public GridModel Grid { get; private set; }
 
         private LevelService(
             SwipeInputService swipeInputService, 
             CubeFactory cubeFactory,
-            CubeGridMoveService cubeGridMoveService,
             FallService fallService,
             MatchService matchService,
-            SwapService swapService)
+            SwapService swapService,
+            CommandFactory commandFactory)
         {
             _swipeInputService = swipeInputService;
             _swapService = swapService;
-            _cubeMoveService = cubeGridMoveService;
             _cubeFactory = cubeFactory;
             _fallService = fallService;
             _matchService = matchService;
+            _commandFactory = commandFactory;
         }
 
         public void Initialize()
@@ -94,7 +93,7 @@ namespace _Project.Scripts.Gameplay.GameLevel
         private void ExecuteSwapOnGrid(Vector2Int origin, Vector2Int direction, GridModel grid, CommandsContainer commandsContainer)
         {
             List<MoveData> swapMoves = _swapService.Swap(grid, origin, direction);
-            MoveCommand swipeCommand = new MoveCommand(swapMoves, MoveType.Side, _cubeFactory, _cubeMoveService);
+            MoveCommand swipeCommand = _commandFactory.Create<MoveCommand>().Init(swapMoves, MoveType.Side);
             commandsContainer.InvolvedPositions.AddRange(swapMoves.Select((x)=>x.Origin).ToList());
             commandsContainer.InvolvedPositions.AddRange(swapMoves.Select((x)=>x.Destination).ToList());
             commandsContainer.Commands.Enqueue(swipeCommand);
@@ -111,8 +110,8 @@ namespace _Project.Scripts.Gameplay.GameLevel
                 return !HasIntersectingPositions(commandsContainer);
             }
             
-            MoveCommand fallCommand = new MoveCommand(fallMoves, MoveType.Fall, _cubeFactory, _cubeMoveService);
-            DestroyCommand destroyCommand = new DestroyCommand(matches, _cubeFactory);
+            MoveCommand fallCommand = _commandFactory.Create<MoveCommand>().Init(fallMoves, MoveType.Fall);
+            DestroyCommand destroyCommand = _commandFactory.Create<DestroyCommand>().Init(matches);
             commandsContainer.Commands.Enqueue(fallCommand);
             commandsContainer.Commands.Enqueue(destroyCommand);
             
