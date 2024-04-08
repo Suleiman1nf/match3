@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using _Project.Scripts.Gameplay.Cube;
 using _Project.Scripts.Gameplay.Cube.Services;
 using _Project.Scripts.Gameplay.GameGrid;
 using _Project.Scripts.Gameplay.GameGrid.Behaviours;
 using _Project.Scripts.Gameplay.GameGrid.Commands;
+using _Project.Scripts.Gameplay.InputManagement;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
@@ -13,25 +16,27 @@ namespace _Project.Scripts.Gameplay.GameLevel
 {
     public class LevelService : IInitializable, IDisposable
     {
-        private readonly SwipeService _swipeService;
+        private readonly SwipeInputService _swipeInputService;
         private readonly CubeFactory _cubeFactory;
         private readonly CubeGridMoveService _cubeMoveService;
+        private readonly SwapService _swapService;
         private readonly FallService _fallService;
-        private readonly GridService _gridService;
         private readonly MatchService _matchService;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-        private GridModel Grid => _gridService.GridModel;
+
+        private List<CommandsContainer> _currentCommands = new List<CommandsContainer>();
+        public GridModel Grid { get; private set; }
 
         private LevelService(
-            GridService gridService,
-            SwipeService swipeService, 
+            SwipeInputService swipeInputService, 
             CubeFactory cubeFactory,
             CubeGridMoveService cubeGridMoveService,
             FallService fallService,
-            MatchService matchService)
+            MatchService matchService,
+            SwapService swapService)
         {
-            _gridService = gridService;
-            _swipeService = swipeService;
+            _swipeInputService = swipeInputService;
+            _swapService = swapService;
             _cubeMoveService = cubeGridMoveService;
             _cubeFactory = cubeFactory;
             _fallService = fallService;
@@ -40,17 +45,18 @@ namespace _Project.Scripts.Gameplay.GameLevel
 
         public void Initialize()
         {
-            _swipeService.OnSwipe += OnSwipeInputCube;
+            _swipeInputService.OnSwipe += OnSwipeInput;
         }
 
         public void Dispose()
         {
-            _swipeService.OnSwipe -= OnSwipeInputCube;
+            _swipeInputService.OnSwipe -= OnSwipeInput;
             _cancellationTokenSource?.Dispose();
         }
 
-        public void Load()
+        public void Load(GridModel grid)
         {
+            Grid = grid;
             for (int i = 0; i < Grid.SizeX; i++)
             {
                 for (int j = 0; j < Grid.SizeY; j++)
@@ -63,36 +69,52 @@ namespace _Project.Scripts.Gameplay.GameLevel
             }
         }
 
-        private void OnSwipeInputCube(List<MoveData> moves)
+        private void OnSwipeInput(ISwipeable swipeable, Vector2Int direction)
         {
-            NormalizeGrid(new Queue<Command>(), moves);
+            CubeController cubeController = swipeable as CubeController;
+            if (cubeController == null)
+            {
+                return;
+            }
+            
+            Vector2Int origin = cubeController.CubeGridData.GetPosition();
+
+            List<MoveData> swapMoves = _swapService.Swap(Grid, origin, direction);
+            NormalizeGrid(Grid, new CommandsContainer(), swapMoves);
         }
 
-        private void NormalizeGrid(Queue<Command> commands, List<MoveData> swipeMoves)
+        private void NormalizeGrid(GridModel grid, CommandsContainer commandsContainer, List<MoveData> swipeMoves)
         {
-            List<MoveData> fallMoves = _fallService.ProcessFall();
-            List<Vector2Int> matches = _matchService.FindMatches();
+            List<MoveData> fallMoves = _fallService.ProcessFall(grid);
+            List<Vector2Int> matches = _matchService.FindMatches(grid);
             if (fallMoves.Count <= 0 && matches.Count <= 0 && swipeMoves.Count <= 0)
             {
-                ExecuteCommands(commands).Forget();
+                ExecuteCommands(commandsContainer).Forget();
                 return;
             }
             DestroyMatches(matches);
             MoveCommand swipeCommand = new MoveCommand(swipeMoves, _cubeFactory, _cubeMoveService);
             MoveCommand fallCommand = new MoveCommand(fallMoves, _cubeFactory, _cubeMoveService);
             DestroyCommand destroyCommand = new DestroyCommand(matches, _cubeFactory);
-            commands.Enqueue(swipeCommand);
-            commands.Enqueue(fallCommand);
-            commands.Enqueue(destroyCommand);
-            NormalizeGrid(commands, new List<MoveData>());
+            commandsContainer.InvolvedPositions.AddRange(matches);
+            commandsContainer.InvolvedPositions.AddRange(fallMoves.Select((x)=>x.Destination).ToList());
+            commandsContainer.InvolvedPositions.AddRange(fallMoves.Select((x)=>x.Origin).ToList());
+            commandsContainer.InvolvedPositions.AddRange(swipeMoves.Select((x)=>x.Origin).ToList());
+            commandsContainer.InvolvedPositions.AddRange(swipeMoves.Select((x)=>x.Destination).ToList());
+            commandsContainer.Commands.Enqueue(swipeCommand);
+            commandsContainer.Commands.Enqueue(fallCommand);
+            commandsContainer.Commands.Enqueue(destroyCommand);
+            NormalizeGrid(grid, commandsContainer, new List<MoveData>());
         }
 
-        private async UniTask ExecuteCommands(Queue<Command> commands)
+        private async UniTask ExecuteCommands(CommandsContainer commandsContainer)
         {
-            while (commands.Count > 0)
+            _currentCommands.Add(commandsContainer);
+            while (commandsContainer.Commands.Count > 0)
             {
-                await commands.Dequeue().Execute(_cancellationTokenSource.Token);
+                await commandsContainer.Commands.Dequeue().Execute(_cancellationTokenSource.Token);
             }
+            _currentCommands.Remove(commandsContainer);
         }
 
         private void DestroyMatches(List<Vector2Int> matches)

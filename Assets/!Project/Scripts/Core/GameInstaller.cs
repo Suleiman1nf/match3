@@ -3,6 +3,7 @@ using _Project.Scripts.Core.Audio;
 using _Project.Scripts.Core.Save;
 using _Project.Scripts.Gameplay.Background;
 using _Project.Scripts.Gameplay.Cube.Services;
+using _Project.Scripts.Gameplay.GameGrid;
 using _Project.Scripts.Gameplay.GameGrid.Behaviours;
 using _Project.Scripts.Gameplay.GameGrid.World;
 using _Project.Scripts.Gameplay.GameLevel;
@@ -31,11 +32,10 @@ namespace _Project.Scripts.Core
             WorldGridServiceInstaller.Install(Container, _worldGridSettings);
             CubeFactoryInstaller.Install(Container, _cubeFactorySettings);
             LevelServiceInstaller.Install(Container);
-            GridServiceInstaller.Install(Container);
             SwipeInputServiceInstaller.Install(Container);
             FallServiceInstaller.Install(Container);
             CubeGridMoveServiceInstaller.Install(Container);
-            SwipeServiceInstaller.Install(Container);
+            SwapServiceInstaller.Install(Container);
             MatchServiceInstaller.Install(Container);
         }
     }

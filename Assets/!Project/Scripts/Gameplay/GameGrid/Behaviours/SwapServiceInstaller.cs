@@ -2,11 +2,11 @@
 
 namespace _Project.Scripts.Gameplay.GameGrid.Behaviours
 {
-    public class GridServiceInstaller : Installer<GridServiceInstaller>
+    public class SwapServiceInstaller : Installer<SwapServiceInstaller>
     {
         public override void InstallBindings()
         {
-            Container.Bind<GridService>().FromNew().AsSingle();
+            Container.BindInterfacesAndSelfTo<SwapService>().FromNew().AsSingle();
         }
     }
 }

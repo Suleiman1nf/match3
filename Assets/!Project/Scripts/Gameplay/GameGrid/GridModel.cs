@@ -19,6 +19,16 @@ namespace _Project.Scripts.Gameplay.GameGrid
             _grid[x, y] = value;
         }
 
+        public void Set(Vector2Int position, int value)
+        {
+            Set(position.x, position.y, value);
+        }
+
+        public void SetEmpty(Vector2Int position)
+        {
+            Set(position, 0);
+        }
+
         public int Get(int x, int y)
         {
             return _grid[x, y];

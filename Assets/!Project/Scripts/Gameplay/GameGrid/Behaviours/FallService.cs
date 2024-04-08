@@ -5,31 +5,25 @@ namespace _Project.Scripts.Gameplay.GameGrid.Behaviours
 {
     public class FallService
     {
-        private readonly GridService _gridService;
-        
-        private GridModel GridModel => _gridService.GridModel;
-        
-        public FallService(GridService gridService)
-        {
-            _gridService = gridService;
-        }
 
-        public List<MoveData> ProcessFall()
+        public List<MoveData> ProcessFall(GridModel grid)
         {
             List<MoveData> moves = new List<MoveData>();
-            for (int y = 1; y < GridModel.SizeY; y++)
+            for (int y = 1; y < grid.SizeY; y++)
             {
-                for (int x = 0; x < GridModel.SizeX; x++)
+                for (int x = 0; x < grid.SizeX; x++)
                 {
-                    if (GridModel.IsEmptyAt(x, y))
+                    if (grid.IsEmptyAt(x, y))
                     {
                         continue;
                     }
                     Vector2Int position = new Vector2Int(x, y);
-                    Vector2Int fallPosition = FallPosition(position);
+                    Vector2Int fallPosition = FallPosition(grid, position);
                     if (position != fallPosition)
                     {
-                        _gridService.SwapValues(position, fallPosition);
+                        int value = grid.Get(position);
+                        grid.SetEmpty(position);
+                        grid.Set(fallPosition, value);
                         moves.Add(new MoveData(position, fallPosition));
                     }
                 }
@@ -38,12 +32,12 @@ namespace _Project.Scripts.Gameplay.GameGrid.Behaviours
             return moves;
         }
 
-        private Vector2Int FallPosition(Vector2Int blockPosition)
+        private Vector2Int FallPosition(GridModel grid, Vector2Int blockPosition)
         {
             int x = blockPosition.x;
             int y = blockPosition.y-1;
 
-            while (GridModel.IsEmptyAt(x, y))
+            while (grid.IsEmptyAt(x, y))
             {
                 y--;
                 if (y < 0)

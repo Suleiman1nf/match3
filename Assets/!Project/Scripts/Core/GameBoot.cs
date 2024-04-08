@@ -21,7 +21,6 @@ namespace _Project.Scripts.Core
         private BackgroundImageService _backgroundImageService;
         private BalloonsSpawnService _balloonsSpawnService;
         private LevelService _levelService;
-        private GridService _gridService;
         private WorldGridService _worldGridService;
 
         [Inject]
@@ -30,7 +29,6 @@ namespace _Project.Scripts.Core
             BackgroundImageService backgroundImageService, 
             BalloonsSpawnService balloonsSpawnService,
             LevelService levelService,
-            GridService gridService,
             WorldGridService worldGridService)
         {
             _saveService = saveService;
@@ -38,7 +36,6 @@ namespace _Project.Scripts.Core
             _backgroundImageService = backgroundImageService;
             _balloonsSpawnService = balloonsSpawnService;
             _levelService = levelService;
-            _gridService = gridService;
             _worldGridService = worldGridService;
         }
 
@@ -49,9 +46,8 @@ namespace _Project.Scripts.Core
             _backgroundImageService.SetBackground(_testBackground);
             _balloonsSpawnService.StartSpawning();
             GridModel model = GridParser.FromData(_level.text);
-            _gridService.Init(model);
             _worldGridService.Init(model.SizeX, model.SizeY);
-            _levelService.Load();
+            _levelService.Load(model);
         }
     }
 }
