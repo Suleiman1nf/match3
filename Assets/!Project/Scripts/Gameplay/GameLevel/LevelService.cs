@@ -76,23 +76,36 @@ namespace _Project.Scripts.Gameplay.GameLevel
             {
                 return;
             }
+
+            CommandsContainer commandsContainer = new CommandsContainer();
+            GridModel copyGrid = Grid.Clone();
             
             Vector2Int origin = cubeController.CubeGridData.GetPosition();
-
-            List<MoveData> swapMoves = _swapService.Swap(Grid, origin, direction);
-            NormalizeGrid(Grid, new CommandsContainer(), swapMoves);
+            List<MoveData> swapMoves = _swapService.Swap(copyGrid, origin, direction);
+            if (TryChangeGrid(copyGrid, commandsContainer, swapMoves))
+            {
+                Grid = copyGrid;
+                ExecuteCommands(commandsContainer).Forget();
+            }
         }
 
-        private void NormalizeGrid(GridModel grid, CommandsContainer commandsContainer, List<MoveData> swipeMoves)
+        private bool TryChangeGrid(GridModel grid, CommandsContainer commandsContainer, List<MoveData> swipeMoves)
         {
             List<MoveData> fallMoves = _fallService.ProcessFall(grid);
             List<Vector2Int> matches = _matchService.FindMatches(grid);
             if (fallMoves.Count <= 0 && matches.Count <= 0 && swipeMoves.Count <= 0)
             {
-                ExecuteCommands(commandsContainer).Forget();
-                return;
+                // if we involve positions that are currently in chain of commands to execute we don't allow it
+                foreach (CommandsContainer currentCommand in _currentCommands)
+                {
+                    if (commandsContainer.InvolvedPositions.Intersect(currentCommand.InvolvedPositions).Any())
+                    {
+                        return false;
+                    }
+                }
+                return true;
             }
-            DestroyMatches(matches);
+            DestroyMatches(grid, matches);
             MoveCommand swipeCommand = new MoveCommand(swipeMoves, _cubeFactory, _cubeMoveService);
             MoveCommand fallCommand = new MoveCommand(fallMoves, _cubeFactory, _cubeMoveService);
             DestroyCommand destroyCommand = new DestroyCommand(matches, _cubeFactory);
@@ -104,7 +117,7 @@ namespace _Project.Scripts.Gameplay.GameLevel
             commandsContainer.Commands.Enqueue(swipeCommand);
             commandsContainer.Commands.Enqueue(fallCommand);
             commandsContainer.Commands.Enqueue(destroyCommand);
-            NormalizeGrid(grid, commandsContainer, new List<MoveData>());
+            return TryChangeGrid(grid, commandsContainer, new List<MoveData>());
         }
 
         private async UniTask ExecuteCommands(CommandsContainer commandsContainer)
@@ -117,11 +130,11 @@ namespace _Project.Scripts.Gameplay.GameLevel
             _currentCommands.Remove(commandsContainer);
         }
 
-        private void DestroyMatches(List<Vector2Int> matches)
+        private void DestroyMatches(GridModel gridModel, List<Vector2Int> matches)
         {
             foreach (Vector2Int pos in matches)
             {
-                Grid.Set(pos.x, pos.y, 0);
+                gridModel.Set(pos.x, pos.y, 0);
             }
         }
     }

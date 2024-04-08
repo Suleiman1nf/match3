@@ -1,4 +1,6 @@
-﻿namespace _Project.Scripts.Gameplay.GameGrid
+﻿using UnityEngine;
+
+namespace _Project.Scripts.Gameplay.GameGrid
 {
     public static class GridParser
     {
@@ -38,12 +40,18 @@
             {
                 for (int i = 0; i < gridModel.SizeX; i++)
                 {
-                    text += gridModel.Get(i, j) + " ";
+                    text += gridModel.Get(i, j);
+                    if (i < gridModel.SizeX - 1)
+                    {
+                        text += " ";
+                    }
                 }
-                text += "\n";
 
+                if (j > 0)
+                {
+                    text += "\n";
+                }
             }
-
             return text;
         }
     }

@@ -11,6 +11,8 @@ namespace _Project.Scripts.Gameplay.GameGrid.World
         private int _sizeX;
         private int _sizeY;
 
+        public Grid Grid => _settings.Grid;
+
         public WorldGridService(Settings settings)
         {
             _settings = settings;

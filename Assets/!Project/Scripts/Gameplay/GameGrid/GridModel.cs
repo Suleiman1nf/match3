@@ -48,5 +48,19 @@ namespace _Project.Scripts.Gameplay.GameGrid
         {
             return IsEmptyAt(pos.x, pos.y);
         }
+
+        public GridModel Clone()
+        {
+            GridModel gridModel = new GridModel(new int[SizeX, SizeY]);
+            for (int i = 0; i < gridModel.SizeX; i++)
+            {
+                for (int j = 0; j < gridModel.SizeY; j++)
+                {
+                    gridModel.Set(i,j,_grid[i,j]);
+                }
+            }
+
+            return gridModel;
+        }
     }
 }

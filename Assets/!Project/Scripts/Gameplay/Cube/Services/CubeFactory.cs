@@ -26,6 +26,7 @@ namespace _Project.Scripts.Gameplay.Cube.Services
             CubeController cube = GameObject.Instantiate(prefab, _settings.Container);
             cube.transform.position = _worldGridService.GetPosition(position);
             cube.CubeGridData.SetPosition(position);
+            cube.transform.localScale *= _worldGridService.Grid.cellSize.x;
             _createdCubes.Add(cube);
             return cube;
         }

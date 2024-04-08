@@ -41,6 +41,7 @@ namespace _Project.Scripts.Core
 
         public void Start()
         {
+            Application.targetFrameRate = 60;
             _saveService.Load();
             _audioService.Init(_saveService.GameSave.AudioSave);
             _backgroundImageService.SetBackground(_testBackground);
