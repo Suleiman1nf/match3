@@ -1,8 +1,8 @@
 using _Project.Scripts.Core.Audio;
 using _Project.Scripts.Core.Save;
+using _Project.Scripts.Core.UI;
 using _Project.Scripts.Gameplay.Background;
 using _Project.Scripts.Gameplay.GameGrid;
-using _Project.Scripts.Gameplay.GameGrid.Behaviours;
 using _Project.Scripts.Gameplay.GameGrid.World;
 using _Project.Scripts.Gameplay.GameLevel;
 using UnityEngine;
@@ -22,6 +22,7 @@ namespace _Project.Scripts.Core
         private BalloonsSpawnService _balloonsSpawnService;
         private LevelService _levelService;
         private WorldGridService _worldGridService;
+        private UIService _uiService;
 
         [Inject]
         public void Construct(SaveService saveService, 
@@ -29,7 +30,8 @@ namespace _Project.Scripts.Core
             BackgroundImageService backgroundImageService, 
             BalloonsSpawnService balloonsSpawnService,
             LevelService levelService,
-            WorldGridService worldGridService)
+            WorldGridService worldGridService,
+            UIService uiService)
         {
             _saveService = saveService;
             _audioService = audioService;
@@ -37,6 +39,7 @@ namespace _Project.Scripts.Core
             _balloonsSpawnService = balloonsSpawnService;
             _levelService = levelService;
             _worldGridService = worldGridService;
+            _uiService = uiService;
         }
 
         public void Start()
@@ -46,6 +49,8 @@ namespace _Project.Scripts.Core
             _audioService.Init(_saveService.GameSave.AudioSave);
             _backgroundImageService.SetBackground(_testBackground);
             _balloonsSpawnService.StartSpawning();
+            _uiService.Init();
+            _uiService.ShowGamePanel();
             GridModel model = GridParser.FromData(_level.text);
             _worldGridService.Init(model.SizeX, model.SizeY);
             _levelService.Load(model);

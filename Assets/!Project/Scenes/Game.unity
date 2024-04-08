@@ -853,6 +853,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameSettings: {fileID: 11400000, guid: 7f55caca4eb8d2344b0b58b05d793114, type: 2}
+  _uiSettings:
+    <UISettings>k__BackingField: {fileID: 11400000, guid: 39677a335f75ff540b6bc818290c3787, type: 2}
   _audioSettings:
     <Data>k__BackingField: {fileID: 11400000, guid: de8f060abc4b1364881e747fe520cfb8, type: 2}
     <MusicAudio>k__BackingField: {fileID: 1939245746}
