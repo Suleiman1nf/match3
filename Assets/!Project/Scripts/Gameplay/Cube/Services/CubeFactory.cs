@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.Gameplay.GameGrid.World;
 using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts.Gameplay.Cube.Services
 {
-    public class CubeFactory
+    public class CubeFactory : PlaceholderFactory<UnityEngine.Object, CubeController>
     {
         private Settings _settings;
 
@@ -23,7 +24,8 @@ namespace _Project.Scripts.Gameplay.Cube.Services
         public CubeController CreateCube(int cubeId, Vector2Int position)
         {
             CubeController prefab = GetCubePrefabById(cubeId);
-            CubeController cube = GameObject.Instantiate(prefab, _settings.Container);
+            CubeController cube = Create(prefab);
+            cube.transform.SetParent(_settings.Container);
             cube.transform.position = _worldGridService.GetPosition(position);
             cube.CubeGridData.SetPosition(position);
             cube.transform.localScale *= _worldGridService.Grid.cellSize.x;

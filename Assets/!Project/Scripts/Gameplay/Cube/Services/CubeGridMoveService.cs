@@ -14,11 +14,11 @@ namespace _Project.Scripts.Gameplay.Cube.Services
             _worldGridService = worldGridService;
         }
 
-        public async UniTask Move(CubeController cubeController, Vector2Int destination, CancellationToken cancellationToken)
+        public async UniTask Move(CubeController cubeController, Vector2Int destination, MoveType moveType, CancellationToken cancellationToken)
         {
             Vector3 position = _worldGridService.GetPosition(destination);
             cubeController.CubeGridData.SetPosition(destination);
-            await cubeController.CubeMovement.MoveAsync(position, cancellationToken);
+            await cubeController.CubeMovement.MoveAsync(moveType, position, cancellationToken);
         }
     }
 }

@@ -94,7 +94,7 @@ namespace _Project.Scripts.Gameplay.GameLevel
         private void ExecuteSwapOnGrid(Vector2Int origin, Vector2Int direction, GridModel grid, CommandsContainer commandsContainer)
         {
             List<MoveData> swapMoves = _swapService.Swap(grid, origin, direction);
-            MoveCommand swipeCommand = new MoveCommand(swapMoves, _cubeFactory, _cubeMoveService);
+            MoveCommand swipeCommand = new MoveCommand(swapMoves, MoveType.Side, _cubeFactory, _cubeMoveService);
             commandsContainer.InvolvedPositions.AddRange(swapMoves.Select((x)=>x.Origin).ToList());
             commandsContainer.InvolvedPositions.AddRange(swapMoves.Select((x)=>x.Destination).ToList());
             commandsContainer.Commands.Enqueue(swipeCommand);
@@ -111,7 +111,7 @@ namespace _Project.Scripts.Gameplay.GameLevel
                 return !HasIntersectingPositions(commandsContainer);
             }
             
-            MoveCommand fallCommand = new MoveCommand(fallMoves, _cubeFactory, _cubeMoveService);
+            MoveCommand fallCommand = new MoveCommand(fallMoves, MoveType.Fall, _cubeFactory, _cubeMoveService);
             DestroyCommand destroyCommand = new DestroyCommand(matches, _cubeFactory);
             commandsContainer.Commands.Enqueue(fallCommand);
             commandsContainer.Commands.Enqueue(destroyCommand);

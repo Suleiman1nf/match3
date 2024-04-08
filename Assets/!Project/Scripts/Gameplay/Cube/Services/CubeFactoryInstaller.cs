@@ -13,7 +13,8 @@ namespace _Project.Scripts.Gameplay.Cube.Services
 
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<CubeFactory>().FromNew().AsSingle().WithArguments(_settings);
+            Container.BindInstance(_settings).AsSingle();
+            Container.BindFactory<UnityEngine.Object, CubeController, CubeFactory>().FromFactory<PrefabFactory<CubeController>>();
         }
     }
 }

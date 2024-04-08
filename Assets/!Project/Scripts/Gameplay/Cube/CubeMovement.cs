@@ -1,18 +1,32 @@
 ﻿using System.Threading;
+using _Project.Scripts.Core;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts.Gameplay.Cube
 {
+    public enum MoveType
+    {
+        Side,
+        Fall
+    }
     public class CubeMovement : MonoBehaviour
     {
-        private const float MoveDuration = 0.5f;
-        private const Ease MoveEase = Ease.OutBack;
+        private GameSettings _gameSettings;
 
-        public async UniTask MoveAsync(Vector3 destination, CancellationToken cancellationToken)
+        [Inject]
+        private void Construct(GameSettings gameSettings)
         {
-            await transform.DOMove(destination, MoveDuration).SetEase(MoveEase).WithCancellation(cancellationToken);
+            _gameSettings = gameSettings;
+        }
+
+        public async UniTask MoveAsync(MoveType moveType, Vector3 destination, CancellationToken cancellationToken)
+        {
+            float duration = moveType == MoveType.Side ? _gameSettings.SideMoveDuration : _gameSettings.FallDuration;
+            Ease ease = moveType == MoveType.Side ? _gameSettings.SideMoveEase : _gameSettings.FallEase;
+            await transform.DOMove(destination, duration).SetEase(ease).WithCancellation(cancellationToken);
         }
     }
 }

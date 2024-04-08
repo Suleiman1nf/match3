@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 356049d37f9c42ac84aa816c4ac91762, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
+  <SideMoveDuration>k__BackingField: 0.15
+  <SideMoveEase>k__BackingField: 1
+  <FallDuration>k__BackingField: 0.3
+  <FallEase>k__BackingField: 30

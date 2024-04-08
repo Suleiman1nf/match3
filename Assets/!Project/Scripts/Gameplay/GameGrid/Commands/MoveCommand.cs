@@ -12,10 +12,12 @@ namespace _Project.Scripts.Gameplay.GameGrid.Commands
         private List<MoveData> _moves;
         private CubeFactory _cubeFactory;
         private CubeGridMoveService _cubeGridMoveService;
+        private MoveType _moveType;
 
-        public MoveCommand(List<MoveData> moves, CubeFactory cubeFactory, CubeGridMoveService cubeGridMoveService)
+        public MoveCommand(List<MoveData> moves, MoveType moveType, CubeFactory cubeFactory, CubeGridMoveService cubeGridMoveService)
         {
             _moves = moves;
+            _moveType = moveType;
             _cubeFactory = cubeFactory;
             _cubeGridMoveService = cubeGridMoveService;
         }
@@ -35,7 +37,7 @@ namespace _Project.Scripts.Gameplay.GameGrid.Commands
                 CubeController cubeController = cubes[index];
                 if (cubeController != null)
                 {
-                    UniTask task = _cubeGridMoveService.Move(cubeController, _moves[index].Destination,
+                    UniTask task = _cubeGridMoveService.Move(cubeController, _moves[index].Destination,_moveType,
                         cancellationToken);
                     tasks.Add(task);
                 }
