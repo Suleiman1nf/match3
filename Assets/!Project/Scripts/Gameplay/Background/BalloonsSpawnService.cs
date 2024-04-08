@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using _Project.Scripts.Utils;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Bounds = _Project.Scripts.Utils.Bounds;
 using Random = UnityEngine.Random;
 

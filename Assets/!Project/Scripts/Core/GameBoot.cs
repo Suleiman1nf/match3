@@ -12,10 +12,9 @@ namespace _Project.Scripts.Core
 {
     public class GameBoot : MonoBehaviour
     {
-        [SerializeField] private GameObject _testBackground;
         [SerializeField] private GameObject _testObj;
-        [SerializeField] private TextAsset _level;
-        
+
+        private GameSettings _gameSettings;
         private SaveService _saveService;
         private AudioService _audioService;
         private BackgroundImageService _backgroundImageService;
@@ -25,7 +24,9 @@ namespace _Project.Scripts.Core
         private UIService _uiService;
 
         [Inject]
-        public void Construct(SaveService saveService, 
+        public void Construct(
+            GameSettings gameSettings,
+            SaveService saveService, 
             AudioService audioService, 
             BackgroundImageService backgroundImageService, 
             BalloonsSpawnService balloonsSpawnService,
@@ -33,6 +34,7 @@ namespace _Project.Scripts.Core
             WorldGridService worldGridService,
             UIService uiService)
         {
+            _gameSettings = gameSettings;
             _saveService = saveService;
             _audioService = audioService;
             _backgroundImageService = backgroundImageService;
@@ -47,11 +49,12 @@ namespace _Project.Scripts.Core
             Application.targetFrameRate = 60;
             _saveService.Load();
             _audioService.Init(_saveService.GameSave.AudioSave);
-            _backgroundImageService.SetBackground(_testBackground);
+            LevelData currentLevel = _gameSettings.Levels[_saveService.GameSave.currentLevel % _gameSettings.Levels.Count];
+            _backgroundImageService.SetBackground(currentLevel.Background);
             _balloonsSpawnService.StartSpawning();
             _uiService.Init();
             _uiService.ShowGamePanel();
-            GridModel model = GridParser.FromData(_level.text);
+            GridModel model = GridParser.FromData(currentLevel.GridFile.text);
             _worldGridService.Init(model.SizeX, model.SizeY);
             _levelService.Load(model);
         }

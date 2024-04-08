@@ -50,6 +50,7 @@ namespace _Project.Scripts.Gameplay.GameLevel
         public void Dispose()
         {
             _swipeInputService.OnSwipe -= OnSwipeInput;
+            _cancellationTokenSource?.Cancel();
             _cancellationTokenSource?.Dispose();
         }
 

@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 356049d37f9c42ac84aa816c4ac91762, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
+  <Levels>k__BackingField:
+  - {fileID: 11400000, guid: f9ac27e8fea3d374d82d02ff81b078d0, type: 2}
+  - {fileID: 11400000, guid: 7f2c8b387aacd6f4b943e9bff80f7918, type: 2}
+  - {fileID: 11400000, guid: 8b17a088fb8b40b46b8295e9f28c60ff, type: 2}
   <SideMoveDuration>k__BackingField: 0.15
   <SideMoveEase>k__BackingField: 1
   <FallDuration>k__BackingField: 0.3
