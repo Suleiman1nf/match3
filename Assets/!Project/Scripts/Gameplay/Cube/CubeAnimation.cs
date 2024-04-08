@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Gameplay.Cube
 {
@@ -10,14 +9,13 @@ namespace _Project.Scripts.Gameplay.Cube
     {
         private static readonly int DestroyParam = Animator.StringToHash("Destroy");
         private static readonly int Idle = Animator.StringToHash("Idle");
-        private const float IdleDelayMaxTime = 0.5f;
-        private const float DeathTime = 1.6f;
         private Animator _animator;
+
+        private bool _isDeadEventReceived;
 
         private void Awake()
         {
             _animator = GetComponent<Animator>();
-            DelayIdle(this.GetCancellationTokenOnDestroy()).Forget();
         }
 
         public void PlayIdle()
@@ -27,14 +25,14 @@ namespace _Project.Scripts.Gameplay.Cube
 
         public async UniTask PlayDeath(CancellationToken cancellationToken)
         {
+            _isDeadEventReceived = false;
             _animator.SetTrigger(DestroyParam);
-            await UniTask.WaitForSeconds(DeathTime, cancellationToken: cancellationToken);
+            await UniTask.WaitWhile(()=>!_isDeadEventReceived, cancellationToken: cancellationToken);
         }
 
-        private async UniTaskVoid DelayIdle(CancellationToken cancellationToken)
+        public void OnDeathEvent()
         {
-            await UniTask.WaitForSeconds(Random.Range(0, IdleDelayMaxTime), cancellationToken: cancellationToken);
-            PlayIdle();
+            _isDeadEventReceived = true;
         }
     }
 }
