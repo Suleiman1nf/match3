@@ -2,7 +2,7 @@ using _Project.Scripts.Core.Audio;
 using _Project.Scripts.Core.Save;
 using _Project.Scripts.Gameplay.Background;
 using _Project.Scripts.Gameplay.GameGrid;
-using _Project.Scripts.Gameplay.GameGrid.Movement;
+using _Project.Scripts.Gameplay.GameGrid.Behaviours;
 using _Project.Scripts.Gameplay.GameGrid.World;
 using _Project.Scripts.Gameplay.GameLevel;
 using UnityEngine;

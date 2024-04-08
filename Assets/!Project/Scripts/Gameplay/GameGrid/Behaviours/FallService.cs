@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace _Project.Scripts.Gameplay.GameGrid.Movement
+namespace _Project.Scripts.Gameplay.GameGrid.Behaviours
 {
     public class FallService
     {
@@ -21,6 +21,10 @@ namespace _Project.Scripts.Gameplay.GameGrid.Movement
             {
                 for (int x = 0; x < GridModel.SizeX; x++)
                 {
+                    if (GridModel.IsEmptyAt(x, y))
+                    {
+                        continue;
+                    }
                     Vector2Int position = new Vector2Int(x, y);
                     Vector2Int fallPosition = FallPosition(position);
                     if (position != fallPosition)

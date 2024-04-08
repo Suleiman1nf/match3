@@ -3,7 +3,7 @@ using _Project.Scripts.Core.Audio;
 using _Project.Scripts.Core.Save;
 using _Project.Scripts.Gameplay.Background;
 using _Project.Scripts.Gameplay.Cube.Services;
-using _Project.Scripts.Gameplay.GameGrid.Movement;
+using _Project.Scripts.Gameplay.GameGrid.Behaviours;
 using _Project.Scripts.Gameplay.GameGrid.World;
 using _Project.Scripts.Gameplay.GameLevel;
 using _Project.Scripts.Gameplay.InputManagement;
@@ -36,6 +36,7 @@ namespace _Project.Scripts.Core
             FallServiceInstaller.Install(Container);
             CubeGridMoveServiceInstaller.Install(Container);
             SwipeServiceInstaller.Install(Container);
+            MatchServiceInstaller.Install(Container);
         }
     }
 }

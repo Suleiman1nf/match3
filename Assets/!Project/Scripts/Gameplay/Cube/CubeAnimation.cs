@@ -10,7 +10,8 @@ namespace _Project.Scripts.Gameplay.Cube
     {
         private static readonly int DestroyParam = Animator.StringToHash("Destroy");
         private static readonly int Idle = Animator.StringToHash("Idle");
-        private const float IdleDelayMaxTime = 2f;
+        private const float IdleDelayMaxTime = 0.5f;
+        private const float DeathTime = 1.6f;
         private Animator _animator;
 
         private void Awake()
@@ -24,9 +25,10 @@ namespace _Project.Scripts.Gameplay.Cube
             _animator.SetTrigger(Idle);
         }
 
-        public void PlayDeath()
+        public async UniTask PlayDeath(CancellationToken cancellationToken)
         {
             _animator.SetTrigger(DestroyParam);
+            await UniTask.WaitForSeconds(DeathTime, cancellationToken: cancellationToken);
         }
 
         private async UniTaskVoid DelayIdle(CancellationToken cancellationToken)

@@ -5,7 +5,7 @@ using _Project.Scripts.Gameplay.InputManagement;
 using UnityEngine;
 using Zenject;
 
-namespace _Project.Scripts.Gameplay.GameGrid.Movement
+namespace _Project.Scripts.Gameplay.GameGrid.Behaviours
 {
     public class SwipeService : IInitializable, IDisposable
     {

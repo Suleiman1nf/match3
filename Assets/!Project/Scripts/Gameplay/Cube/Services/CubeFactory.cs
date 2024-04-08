@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.Gameplay.GameGrid.World;
 using UnityEngine;
-using Zenject;
+using Object = UnityEngine.Object;
 
 namespace _Project.Scripts.Gameplay.Cube.Services
 {
@@ -15,8 +15,7 @@ namespace _Project.Scripts.Gameplay.Cube.Services
         
         private WorldGridService _worldGridService;
 
-        [Inject]
-        public void Construct(WorldGridService worldGridService, Settings settings)
+        public CubeFactory(WorldGridService worldGridService, Settings settings)
         {
             _worldGridService = worldGridService;
             _settings = settings;
@@ -36,6 +35,12 @@ namespace _Project.Scripts.Gameplay.Cube.Services
         {
             cubeController = _createdCubes.FirstOrDefault((x)=>x.CubeGridData.GetPosition() == pos);
             return cubeController != null;
+        }
+
+        public void DestroyCube(CubeController cubeController)
+        {
+            _createdCubes.Remove(cubeController);
+            GameObject.Destroy(cubeController.gameObject);
         }
         
         private CubeController GetCubePrefabById(int index)
