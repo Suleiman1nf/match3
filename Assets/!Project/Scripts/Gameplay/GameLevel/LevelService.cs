@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using _Project.Scripts.Gameplay.Cube;
 using _Project.Scripts.Gameplay.Cube.Services;
 using _Project.Scripts.Gameplay.GameGrid;
 using _Project.Scripts.Gameplay.GameGrid.Behaviours;
+using _Project.Scripts.Gameplay.GameGrid.Commands;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
@@ -20,7 +20,6 @@ namespace _Project.Scripts.Gameplay.GameLevel
         private readonly GridService _gridService;
         private readonly MatchService _matchService;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-        
         private GridModel Grid => _gridService.GridModel;
 
         private LevelService(
@@ -66,22 +65,34 @@ namespace _Project.Scripts.Gameplay.GameLevel
 
         private void OnSwipeInputCube(List<MoveData> moves)
         {
-            NormalizeGrid(moves).Forget();
+            NormalizeGrid(new Queue<Command>(), moves);
         }
 
-        private async UniTask NormalizeGrid(List<MoveData> swipeMoves)
+        private void NormalizeGrid(Queue<Command> commands, List<MoveData> swipeMoves)
         {
-            List<MoveData> moves = _fallService.ProcessFall();
+            List<MoveData> fallMoves = _fallService.ProcessFall();
             List<Vector2Int> matches = _matchService.FindMatches();
-            if (moves.Count <= 0 && matches.Count <= 0 && swipeMoves.Count <= 0)
+            if (fallMoves.Count <= 0 && matches.Count <= 0 && swipeMoves.Count <= 0)
             {
+                ExecuteCommands(commands).Forget();
                 return;
             }
             DestroyMatches(matches);
-            await MoveCubes(swipeMoves, _cancellationTokenSource.Token);
-            await MoveCubes(moves, _cancellationTokenSource.Token);
-            await DestroyCubes(matches, _cancellationTokenSource.Token);
-            await NormalizeGrid(new List<MoveData>());
+            MoveCommand swipeCommand = new MoveCommand(swipeMoves, _cubeFactory, _cubeMoveService);
+            MoveCommand fallCommand = new MoveCommand(fallMoves, _cubeFactory, _cubeMoveService);
+            DestroyCommand destroyCommand = new DestroyCommand(matches, _cubeFactory);
+            commands.Enqueue(swipeCommand);
+            commands.Enqueue(fallCommand);
+            commands.Enqueue(destroyCommand);
+            NormalizeGrid(commands, new List<MoveData>());
+        }
+
+        private async UniTask ExecuteCommands(Queue<Command> commands)
+        {
+            while (commands.Count > 0)
+            {
+                await commands.Dequeue().Execute(_cancellationTokenSource.Token);
+            }
         }
 
         private void DestroyMatches(List<Vector2Int> matches)
@@ -90,52 +101,6 @@ namespace _Project.Scripts.Gameplay.GameLevel
             {
                 Grid.Set(pos.x, pos.y, 0);
             }
-        }
-
-        private async UniTask DestroyCubes(List<Vector2Int> matches, CancellationToken cancellationToken)
-        {
-            List<UniTask> destroyTasks = new List<UniTask>();
-            List<CubeController> cubes = new List<CubeController>();
-            foreach (Vector2Int pos in matches)
-            {
-                if (_cubeFactory.TryGetCube(pos, out CubeController cubeController))
-                {
-                    cubeController.CanSwipe = false;
-                    destroyTasks.Add(cubeController.CubeAnimation.PlayDeath(cancellationToken));
-                    cubes.Add(cubeController);
-                }
-            }
-
-            await UniTask.WhenAll(destroyTasks).AttachExternalCancellation(cancellationToken);
-
-            foreach (CubeController cubeController in cubes)
-            {
-                _cubeFactory.DestroyCube(cubeController);
-            }
-        }
-        
-        private async UniTask MoveCubes(List<MoveData> moves, CancellationToken cancellationToken)
-        {
-            List<CubeController> cubes = new List<CubeController>();
-            List<UniTask> tasks = new List<UniTask>();
-            foreach (MoveData moveData in moves)
-            {
-                _cubeFactory.TryGetCube(moveData.Origin, out CubeController cubeController);
-                cubes.Add(cubeController);
-            }
-            
-            for (var index = 0; index < cubes.Count; index++)
-            {
-                CubeController cubeController = cubes[index];
-                if (cubeController != null)
-                {
-                    UniTask task = _cubeMoveService.Move(cubeController, moves[index].Destination,
-                        cancellationToken);
-                    tasks.Add(task);
-                }
-            }
-
-            await UniTask.WhenAll(tasks).AttachExternalCancellation(cancellationToken);
         }
     }
 }
