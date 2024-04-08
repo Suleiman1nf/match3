@@ -16,9 +16,11 @@ namespace _Project.Scripts.Gameplay.Cube.Services
 
         public async UniTask Move(CubeController cubeController, Vector2Int destination, CancellationToken cancellationToken)
         {
+            cubeController.CanSwipe = false;
             Vector3 position = _worldGridService.GetPosition(destination);
             cubeController.CubeGridData.SetPosition(destination);
             await cubeController.CubeMovement.MoveAsync(position, cancellationToken);
+            cubeController.CanSwipe = true;
         }
     }
 }

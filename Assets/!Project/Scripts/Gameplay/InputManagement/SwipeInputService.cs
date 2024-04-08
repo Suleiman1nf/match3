@@ -37,7 +37,7 @@ namespace _Project.Scripts.Gameplay.InputManagement
             {
                 float distance = Vector3.Distance(Input.mousePosition, _startPosition);
                 Vector3 direction =  Input.mousePosition - _startPosition;
-                if (distance > MinSwipeDistance)
+                if (distance > MinSwipeDistance && _swipeable.CanSwipe)
                 {
                     OnSwipe?.Invoke(_swipeable, GetSwipeDirection(direction));
                 }

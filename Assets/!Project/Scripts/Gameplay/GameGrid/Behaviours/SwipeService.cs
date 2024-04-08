@@ -39,7 +39,9 @@ namespace _Project.Scripts.Gameplay.GameGrid.Behaviours
             
             Vector2Int origin = cubeController.CubeGridData.GetPosition();
             Vector2Int destination = origin + direction;
-            if (_gridService.CanMoveTo(origin, direction))
+            if (!_gridService.InAir(origin) 
+                && !_gridService.GridModel.IsEmptyAt(origin) 
+                && _gridService.CanMoveTo(origin, direction))
             {
                 List<MoveData> moves = new List<MoveData>();
                 _gridService.SwapValues(origin, destination);

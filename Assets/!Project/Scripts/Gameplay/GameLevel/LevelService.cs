@@ -64,24 +64,24 @@ namespace _Project.Scripts.Gameplay.GameLevel
             }
         }
 
-        private async void OnSwipeInputCube(List<MoveData> moves)
+        private void OnSwipeInputCube(List<MoveData> moves)
         {
-            await MoveCubes(moves, _cancellationTokenSource.Token);
-            NormalizeGrid().Forget();
+            NormalizeGrid(moves).Forget();
         }
 
-        private async UniTask NormalizeGrid()
+        private async UniTask NormalizeGrid(List<MoveData> swipeMoves)
         {
             List<MoveData> moves = _fallService.ProcessFall();
             List<Vector2Int> matches = _matchService.FindMatches();
-            if (moves.Count <= 0 && matches.Count <= 0)
+            if (moves.Count <= 0 && matches.Count <= 0 && swipeMoves.Count <= 0)
             {
                 return;
             }
-            await MoveCubes(moves, _cancellationTokenSource.Token);
             DestroyMatches(matches);
+            await MoveCubes(swipeMoves, _cancellationTokenSource.Token);
+            await MoveCubes(moves, _cancellationTokenSource.Token);
             await DestroyCubes(matches, _cancellationTokenSource.Token);
-            await NormalizeGrid();
+            await NormalizeGrid(new List<MoveData>());
         }
 
         private void DestroyMatches(List<Vector2Int> matches)
@@ -100,12 +100,13 @@ namespace _Project.Scripts.Gameplay.GameLevel
             {
                 if (_cubeFactory.TryGetCube(pos, out CubeController cubeController))
                 {
+                    cubeController.CanSwipe = false;
                     destroyTasks.Add(cubeController.CubeAnimation.PlayDeath(cancellationToken));
                     cubes.Add(cubeController);
                 }
             }
 
-            await UniTask.WhenAll(destroyTasks);
+            await UniTask.WhenAll(destroyTasks).AttachExternalCancellation(cancellationToken);
 
             foreach (CubeController cubeController in cubes)
             {
@@ -134,7 +135,7 @@ namespace _Project.Scripts.Gameplay.GameLevel
                 }
             }
 
-            await UniTask.WhenAll(tasks);
+            await UniTask.WhenAll(tasks).AttachExternalCancellation(cancellationToken);
         }
     }
 }

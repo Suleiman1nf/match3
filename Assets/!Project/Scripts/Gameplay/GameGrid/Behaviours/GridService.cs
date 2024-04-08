@@ -33,6 +33,11 @@ namespace _Project.Scripts.Gameplay.GameGrid.Behaviours
             GridModel.Set(pos2.x,pos2.y, val1);
         }
 
+        public bool InAir(Vector2Int pos)
+        {
+            return pos.y > 0 && GridModel.IsEmptyAt(pos + new Vector2Int(0, -1));
+        }
+
         private bool InBounds(Vector2Int pos)
         {
             return pos.x < GridModel.SizeX && pos.x >= 0 && pos.y < GridModel.SizeY && pos.y >= 0;

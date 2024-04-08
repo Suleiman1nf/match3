@@ -2,6 +2,6 @@
 {
     public interface ISwipeable
     {
-        
+        public bool CanSwipe { get; set; }
     }
 }

@@ -24,6 +24,11 @@ namespace _Project.Scripts.Gameplay.GameGrid
             return _grid[x, y];
         }
 
+        public int Get(Vector2Int pos)
+        {
+            return Get(pos.x, pos.y);
+        }
+
         public bool IsEmptyAt(int x, int y)
         {
             return _grid[x, y] <= 0;
