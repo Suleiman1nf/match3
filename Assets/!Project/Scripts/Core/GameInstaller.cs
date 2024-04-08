@@ -1,4 +1,5 @@
 using _Project.Scripts.Core.Audio;
+using _Project.Scripts.Core.Restart;
 using _Project.Scripts.Core.Save;
 using _Project.Scripts.Core.UI;
 using _Project.Scripts.Gameplay.Background;
@@ -40,6 +41,7 @@ namespace _Project.Scripts.Core
             SwapServiceInstaller.Install(Container);
             MatchServiceInstaller.Install(Container);
             CommandFactoryInstaller.Install(Container);
+            RestartServiceInstaller.Install(Container);
         }
     }
 }

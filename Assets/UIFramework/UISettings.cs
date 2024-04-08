@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace deVoid.UIFramework
 {
@@ -25,12 +26,12 @@ namespace deVoid.UIFramework
         /// </summary>
         /// <param name="instanceAndRegisterScreens">Should the screens listed in the Settings file be instanced and registered?</param>
         /// <returns>A new UI Frame</returns>
-        public UIFrame CreateUIInstance(bool instanceAndRegisterScreens = true) {
+        public UIFrame CreateUIInstance(DiContainer container, bool instanceAndRegisterScreens = true) {
             var newUI = Instantiate(templateUIPrefab);
 
             if (instanceAndRegisterScreens) {
                 foreach (var screen in screensToRegister) {
-                    var screenInstance = Instantiate(screen);
+                    var screenInstance = container.InstantiatePrefab(screen);
                     var screenController = screenInstance.GetComponent<IUIScreenController>();
 
                     if (screenController != null) {

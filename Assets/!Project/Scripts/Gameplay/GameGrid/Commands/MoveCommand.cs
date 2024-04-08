@@ -15,7 +15,7 @@ namespace _Project.Scripts.Gameplay.GameGrid.Commands
         private List<MoveData> _moves;
         private MoveType _moveType;
         
-        private MoveCommand(CubeFactory cubeFactory, CubeGridMoveService cubeGridMoveService)
+        public MoveCommand(CubeFactory cubeFactory, CubeGridMoveService cubeGridMoveService)
         {
             _cubeFactory = cubeFactory;
             _cubeGridMoveService = cubeGridMoveService;
