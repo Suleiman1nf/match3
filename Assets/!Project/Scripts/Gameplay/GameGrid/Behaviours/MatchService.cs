@@ -6,6 +6,14 @@ namespace _Project.Scripts.Gameplay.GameGrid.Behaviours
 {
     public class MatchService
     {
+        public void DestroyMatches(GridModel gridModel, List<Vector2Int> matches)
+        {
+            foreach (Vector2Int pos in matches)
+            {
+                gridModel.SetEmpty(pos);
+            }
+        }
+        
         public List<Vector2Int> FindMatches(GridModel grid)
         {
             List<Vector2Int> matchedCells = new List<Vector2Int>();

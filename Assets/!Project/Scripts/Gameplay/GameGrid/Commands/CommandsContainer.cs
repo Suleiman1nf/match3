@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using _Project.Scripts.Gameplay.GameGrid.Commands;
 using UnityEngine;
 
-namespace _Project.Scripts.Gameplay.GameLevel
+namespace _Project.Scripts.Gameplay.GameGrid.Commands
 {
     public class CommandsContainer
     {
