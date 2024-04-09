@@ -16,6 +16,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f9ac27e8fea3d374d82d02ff81b078d0, type: 2}
   - {fileID: 11400000, guid: 7f2c8b387aacd6f4b943e9bff80f7918, type: 2}
   - {fileID: 11400000, guid: 8b17a088fb8b40b46b8295e9f28c60ff, type: 2}
+  <CubePrefabs>k__BackingField:
+  - {fileID: 6295667297295763564, guid: 94873152ba5aa174e8ed63256bda383f, type: 3}
+  - {fileID: 2593306917400393443, guid: 89331616d6c8beb478e7c0ce54ada825, type: 3}
   <SideMoveDuration>k__BackingField: 0.15
   <SideMoveEase>k__BackingField: 1
   <FallDuration>k__BackingField: 0.3

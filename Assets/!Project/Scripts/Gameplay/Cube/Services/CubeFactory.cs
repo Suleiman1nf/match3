@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Project.Scripts.Core;
 using _Project.Scripts.Gameplay.GameGrid.World;
 using UnityEngine;
 using Zenject;
@@ -9,6 +10,7 @@ namespace _Project.Scripts.Gameplay.Cube.Services
 {
     public class CubeFactory
     {
+        private readonly GameSettings _gameSettings;
         private readonly Settings _settings;
         private readonly WorldGridService _worldGridService;
         private readonly DiContainer _diContainer;
@@ -18,10 +20,11 @@ namespace _Project.Scripts.Gameplay.Cube.Services
 
         public int CreatedCubesCount => _createdCubes.Count;
 
-        public CubeFactory(WorldGridService worldGridService, DiContainer diContainer, Settings settings)
+        public CubeFactory(WorldGridService worldGridService, DiContainer diContainer, Settings settings, GameSettings gameSettings)
         {
             _worldGridService = worldGridService;
             _settings = settings;
+            _gameSettings = gameSettings;
             _diContainer = diContainer;
         }
 
@@ -52,18 +55,17 @@ namespace _Project.Scripts.Gameplay.Cube.Services
         
         private CubeController GetCubePrefabById(int index)
         {
-            if (index < 1 || index > _settings.CubePrefabs.Count)
+            if (index < 1 || index > _gameSettings.CubePrefabs.Count)
             {
                 throw new Exception($"Cube with id {index} not found");
             }
-            return _settings.CubePrefabs[index-1];
+            return _gameSettings.CubePrefabs[index-1];
         }
 
         [Serializable]
         public class Settings
         {
             [field: SerializeField] public Transform Container { get; private set; }
-            [field: SerializeField] public List<CubeController> CubePrefabs { get; private set; }
         }
     }
 }

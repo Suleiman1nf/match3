@@ -62,5 +62,21 @@ namespace _Project.Scripts.Gameplay.GameGrid
 
             return gridModel;
         }
+
+        public bool IsEmpty()
+        {
+            for (int i = 0; i < SizeX; i++)
+            {
+                for (int j = 0; j < SizeY; j++)
+                {
+                    if (!IsEmptyAt(i, j))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
     }
 }

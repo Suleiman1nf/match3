@@ -70,12 +70,13 @@ namespace _Project.Scripts.Gameplay.GameLevel
             string lastGrid = _saveService.GameSave.GridData;
             if (!string.IsNullOrEmpty(lastGrid))
             {
-                return GridParser.FromData(lastGrid);
+                GridModel grid = GridParser.FromData(lastGrid);
+                if (!grid.IsEmpty())
+                {
+                    return grid;
+                }
             }
-            else
-            {
-                return GridParser.FromData(levelData.GridFile.text);
-            }
+            return GridParser.FromData(levelData.GridFile.text);
         }
     }
 }
