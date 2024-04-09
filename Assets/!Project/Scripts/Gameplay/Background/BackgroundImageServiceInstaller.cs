@@ -4,7 +4,7 @@ namespace _Project.Scripts.Gameplay.Background
 {
     public class BackgroundImageServiceInstaller : Installer<BackgroundImageService.Settings, BackgroundImageServiceInstaller>
     {
-        private BackgroundImageService.Settings _settings;
+        private readonly BackgroundImageService.Settings _settings;
 
         public BackgroundImageServiceInstaller(BackgroundImageService.Settings settings)
         {

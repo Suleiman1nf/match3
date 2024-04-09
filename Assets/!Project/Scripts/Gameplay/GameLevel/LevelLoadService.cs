@@ -53,7 +53,7 @@ namespace _Project.Scripts.Gameplay.GameLevel
 
         public void LoadNextLevel()
         {
-            _saveService.GameSave.CurrentLevel++;
+            _saveService.GameSave.CurrentLevel = (_saveService.GameSave.CurrentLevel + 1) % _gameSettings.Levels.Count;
             EraseModifiedGrid();
             _saveService.Save();
             

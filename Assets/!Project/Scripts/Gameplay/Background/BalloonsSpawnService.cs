@@ -9,7 +9,7 @@ namespace _Project.Scripts.Gameplay.Background
 {
     public class BalloonsSpawnService
     {
-        private Settings _settings;
+        private readonly Settings _settings;
 
         private Bounds _bounds;
 

@@ -18,7 +18,6 @@ namespace _Project.Scripts.Core
 
         [Inject]
         public void Construct(
-            GameSettings gameSettings,
             SaveService saveService, 
             AudioService audioService, 
             GameLogic gameLogic,

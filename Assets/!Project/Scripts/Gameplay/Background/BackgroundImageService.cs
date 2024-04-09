@@ -5,7 +5,7 @@ namespace _Project.Scripts.Gameplay.Background
 {
     public class BackgroundImageService
     {
-        private Settings _settings;
+        private readonly Settings _settings;
 
         public BackgroundImageService(Settings settings)
         {
@@ -14,7 +14,7 @@ namespace _Project.Scripts.Gameplay.Background
 
         public void SetBackground(GameObject backgroundPrefab)
         {
-            GameObject go = GameObject.Instantiate(backgroundPrefab, _settings.BackgroundContainer);
+            GameObject.Instantiate(backgroundPrefab, _settings.BackgroundContainer);
         }
 
         [Serializable]

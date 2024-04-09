@@ -4,7 +4,7 @@ namespace _Project.Scripts.Gameplay.Background
 {
     public class BalloonsSpawnServiceInstaller : Installer<BalloonsSpawnService.Settings, BalloonsSpawnServiceInstaller>
     {
-        private BalloonsSpawnService.Settings _settings;
+        private readonly BalloonsSpawnService.Settings _settings;
 
         public BalloonsSpawnServiceInstaller(BalloonsSpawnService.Settings settings)
         {

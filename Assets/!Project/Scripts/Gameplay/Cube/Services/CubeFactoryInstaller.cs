@@ -4,7 +4,7 @@ namespace _Project.Scripts.Gameplay.Cube.Services
 {
     public class CubeFactoryInstaller : Installer<CubeFactory.Settings, CubeFactoryInstaller>
     {
-        private CubeFactory.Settings _settings;
+        private readonly CubeFactory.Settings _settings;
 
         public CubeFactoryInstaller(CubeFactory.Settings settings)
         {
@@ -14,7 +14,7 @@ namespace _Project.Scripts.Gameplay.Cube.Services
         public override void InstallBindings()
         {
             Container.BindInstance(_settings).AsSingle();
-            Container.BindFactory<UnityEngine.Object, CubeController, CubeFactory>().FromFactory<PrefabFactory<CubeController>>();
+            Container.Bind<CubeFactory>().FromNew().AsSingle();
         }
     }
 }

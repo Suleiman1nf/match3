@@ -92,7 +92,7 @@ namespace _Project.Scripts.Gameplay
 
             ExecuteSwapOnGrid(origin, direction, copyGrid, commandsContainer);
 
-            if (TryChangeGrid(copyGrid, commandsContainer))
+            if (TryNormalizeGrid(copyGrid, commandsContainer))
             {
                 Grid = copyGrid;
                 _saveService.GameSave.GridData = GridParser.ToData(Grid);
@@ -109,11 +109,11 @@ namespace _Project.Scripts.Gameplay
             commandsContainer.Commands.Enqueue(swipeCommand);
         }
 
-        private bool TryChangeGrid(GridModel grid, CommandsContainer commandsContainer)
+        private bool TryNormalizeGrid(GridModel grid, CommandsContainer commandsContainer)
         {
             List<MoveData> fallMoves = _fallService.ProcessFall(grid);
-            List<Vector2Int> matches = _matchService.FindMatches(grid);
-            _matchService.DestroyMatches(grid, matches);
+            List<Vector2Int> matches = _matchService.DestroyMatches(grid);
+            
             if (fallMoves.Count <= 0 && matches.Count <= 0)
             {
                 // if we involve positions that are currently in running commands we don't allow it
@@ -129,7 +129,7 @@ namespace _Project.Scripts.Gameplay
             commandsContainer.InvolvedPositions.AddRange(fallMoves.Select((x)=>x.Destination).ToList());
             commandsContainer.InvolvedPositions.AddRange(fallMoves.Select((x)=>x.Origin).ToList());
             
-            return TryChangeGrid(grid, commandsContainer);
+            return TryNormalizeGrid(grid, commandsContainer);
         }
 
         private async UniTask ExecuteCommands(CommandsContainer commandsContainer)

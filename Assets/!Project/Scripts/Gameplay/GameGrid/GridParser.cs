@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace _Project.Scripts.Gameplay.GameGrid
+﻿namespace _Project.Scripts.Gameplay.GameGrid
 {
     public static class GridParser
     {

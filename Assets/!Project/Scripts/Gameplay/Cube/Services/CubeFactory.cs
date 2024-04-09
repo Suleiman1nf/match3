@@ -7,28 +7,28 @@ using Zenject;
 
 namespace _Project.Scripts.Gameplay.Cube.Services
 {
-    public class CubeFactory : PlaceholderFactory<UnityEngine.Object, CubeController>
+    public class CubeFactory
     {
-        private Settings _settings;
+        private readonly Settings _settings;
+        private readonly WorldGridService _worldGridService;
+        private readonly DiContainer _diContainer;
 
         private List<CubeController> _createdCubes = new List<CubeController>();
-        
-        private WorldGridService _worldGridService;
-
         public event Action<CubeController> OnDestroyCube;
 
         public int CreatedCubesCount => _createdCubes.Count;
 
-        public CubeFactory(WorldGridService worldGridService, Settings settings)
+        public CubeFactory(WorldGridService worldGridService, DiContainer diContainer, Settings settings)
         {
             _worldGridService = worldGridService;
             _settings = settings;
+            _diContainer = diContainer;
         }
 
         public CubeController CreateCube(int cubeId, Vector2Int position)
         {
             CubeController prefab = GetCubePrefabById(cubeId);
-            CubeController cube = Create(prefab);
+            CubeController cube = _diContainer.InstantiatePrefabForComponent<CubeController>(prefab);
             cube.transform.SetParent(_settings.Container);
             cube.transform.position = _worldGridService.GetPosition(position);
             cube.CubeGridData.SetPosition(position);
