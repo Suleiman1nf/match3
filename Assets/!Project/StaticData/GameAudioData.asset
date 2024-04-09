@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <AudioMixer>k__BackingField: {fileID: 24100000, guid: 3274c17ea72e8094baac6b8083bf48b6, type: 2}
   <MusicContainer>k__BackingField: []
+  <Move>k__BackingField: {fileID: 8300000, guid: 698bcdc025a9bca4793010be6e3e0e98, type: 3}
+  <Pop>k__BackingField: {fileID: 8300000, guid: 2b119908ac5c47f4d819ae0bfa848c2c, type: 3}

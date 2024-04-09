@@ -9,5 +9,9 @@ namespace _Project.Scripts.Core.Audio
     {
         [field: SerializeField] public AudioMixer AudioMixer { get; private set; }
         [field: SerializeField] public List<AudioClip> MusicContainer { get; private set; }
+
+        [field: SerializeField] public AudioClip Move { get; private set; }
+
+        [field: SerializeField] public AudioClip Pop { get; private set; }
     }
 }

@@ -9,10 +9,10 @@ namespace _Project.Scripts.Gameplay.Cube
     {
         private static readonly int DestroyParam = Animator.StringToHash("Destroy");
         private static readonly int Idle = Animator.StringToHash("Idle");
+        
         private Animator _animator;
-
         private bool _isDeadEventReceived;
-
+        
         private void Awake()
         {
             _animator = GetComponent<Animator>();
