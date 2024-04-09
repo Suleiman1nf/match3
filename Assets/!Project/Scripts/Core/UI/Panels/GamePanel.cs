@@ -20,7 +20,8 @@ namespace _Project.Scripts.Core.UI.Panels
         
         public void Next()
         {
-            _saveService.GameSave.currentLevel++;
+            _saveService.GameSave.CurrentLevel++;
+            _saveService.GameSave.GridData = "";
             _saveService.Save();
             Restart();
         }

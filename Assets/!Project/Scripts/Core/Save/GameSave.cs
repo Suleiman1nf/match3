@@ -7,6 +7,7 @@ namespace _Project.Scripts.Core.Save
     public class GameSave
     {
         public AudioSave AudioSave = new AudioSave();
-        public int currentLevel = 0;
+        public string GridData = "";
+        public int CurrentLevel = 0;
     }
 }

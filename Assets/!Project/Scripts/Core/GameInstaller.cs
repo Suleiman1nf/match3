@@ -2,6 +2,7 @@ using _Project.Scripts.Core.Audio;
 using _Project.Scripts.Core.Restart;
 using _Project.Scripts.Core.Save;
 using _Project.Scripts.Core.UI;
+using _Project.Scripts.Gameplay;
 using _Project.Scripts.Gameplay.Background;
 using _Project.Scripts.Gameplay.Cube.Services;
 using _Project.Scripts.Gameplay.GameGrid.Behaviours;
@@ -34,7 +35,7 @@ namespace _Project.Scripts.Core
             BalloonsSpawnServiceInstaller.Install(Container, _balloonsSpawnServiceSettings);
             WorldGridServiceInstaller.Install(Container, _worldGridSettings);
             CubeFactoryInstaller.Install(Container, _cubeFactorySettings);
-            LevelServiceInstaller.Install(Container);
+            GameLogicInstaller.Install(Container);
             SwipeInputServiceInstaller.Install(Container);
             FallServiceInstaller.Install(Container);
             CubeGridMoveServiceInstaller.Install(Container);
@@ -42,6 +43,7 @@ namespace _Project.Scripts.Core
             MatchServiceInstaller.Install(Container);
             CommandFactoryInstaller.Install(Container);
             RestartServiceInstaller.Install(Container);
+            LevelLoadServiceInstaller.Install(Container);
         }
     }
 }

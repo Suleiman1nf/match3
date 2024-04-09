@@ -2,20 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using _Project.Scripts.Core.Save;
 using _Project.Scripts.Gameplay.Cube;
 using _Project.Scripts.Gameplay.Cube.Services;
 using _Project.Scripts.Gameplay.GameGrid;
 using _Project.Scripts.Gameplay.GameGrid.Behaviours;
 using _Project.Scripts.Gameplay.GameGrid.Commands;
+using _Project.Scripts.Gameplay.GameLevel;
 using _Project.Scripts.Gameplay.InputManagement;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
-namespace _Project.Scripts.Gameplay.GameLevel
+namespace _Project.Scripts.Gameplay
 {
-    public class LevelService : IInitializable, IDisposable
+    public class GameLogic : IInitializable, IDisposable
     {
+        private readonly SaveService _saveService;
+        private readonly LevelLoadService _levelLoadService;
         private readonly SwipeInputService _swipeInputService;
         private readonly CubeFactory _cubeFactory;
         private readonly SwapService _swapService;
@@ -26,7 +30,9 @@ namespace _Project.Scripts.Gameplay.GameLevel
         private readonly List<CommandsContainer> _runningCommands = new List<CommandsContainer>();
         public GridModel Grid { get; private set; }
 
-        private LevelService(
+        private GameLogic(
+            SaveService saveService,
+            LevelLoadService levelLoadService,
             SwipeInputService swipeInputService, 
             CubeFactory cubeFactory,
             FallService fallService,
@@ -34,12 +40,14 @@ namespace _Project.Scripts.Gameplay.GameLevel
             SwapService swapService,
             CommandFactory commandFactory)
         {
+            _levelLoadService = levelLoadService;
             _swipeInputService = swipeInputService;
             _swapService = swapService;
             _cubeFactory = cubeFactory;
             _fallService = fallService;
             _matchService = matchService;
             _commandFactory = commandFactory;
+            _saveService = saveService;
         }
 
         public void Initialize()
@@ -54,9 +62,9 @@ namespace _Project.Scripts.Gameplay.GameLevel
             _cancellationTokenSource?.Dispose();
         }
 
-        public void Load(GridModel grid)
+        public void Start()
         {
-            Grid = grid;
+            Grid = _levelLoadService.InitialGrid;
             for (int i = 0; i < Grid.SizeX; i++)
             {
                 for (int j = 0; j < Grid.SizeY; j++)
@@ -87,6 +95,7 @@ namespace _Project.Scripts.Gameplay.GameLevel
             if (TryChangeGrid(copyGrid, commandsContainer))
             {
                 Grid = copyGrid;
+                _saveService.GameSave.GridData = GridParser.ToData(Grid);
                 ExecuteCommands(commandsContainer).Forget();
             }
         }
