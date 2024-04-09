@@ -15,6 +15,10 @@ namespace _Project.Scripts.Gameplay.Cube.Services
         
         private WorldGridService _worldGridService;
 
+        public event Action<CubeController> OnDestroyCube;
+
+        public int CreatedCubesCount => _createdCubes.Count;
+
         public CubeFactory(WorldGridService worldGridService, Settings settings)
         {
             _worldGridService = worldGridService;
@@ -42,11 +46,16 @@ namespace _Project.Scripts.Gameplay.Cube.Services
         public void DestroyCube(CubeController cubeController)
         {
             _createdCubes.Remove(cubeController);
+            OnDestroyCube?.Invoke(cubeController);
             GameObject.Destroy(cubeController.gameObject);
         }
         
         private CubeController GetCubePrefabById(int index)
         {
+            if (index < 1 || index > _settings.CubePrefabs.Count)
+            {
+                throw new Exception($"Cube with id {index} not found");
+            }
             return _settings.CubePrefabs[index-1];
         }
 

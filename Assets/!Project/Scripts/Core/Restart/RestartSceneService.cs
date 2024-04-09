@@ -2,11 +2,11 @@
 
 namespace _Project.Scripts.Core.Restart
 {
-    public class RestartService
+    public class RestartSceneService
     {
         private const string GameSceneName = "Game";
         
-        public void RestartLevel()
+        public void Restart()
         {
             SceneManager.LoadScene(GameSceneName);
         }

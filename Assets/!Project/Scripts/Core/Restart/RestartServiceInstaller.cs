@@ -6,7 +6,7 @@ namespace _Project.Scripts.Core.Restart
     {
         public override void InstallBindings()
         {
-            Container.Bind<RestartService>().FromNew().AsSingle();
+            Container.Bind<RestartSceneService>().FromNew().AsSingle();
         }
     }
 }

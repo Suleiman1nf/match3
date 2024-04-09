@@ -1,4 +1,5 @@
 ﻿using _Project.Scripts.Core;
+using _Project.Scripts.Core.Restart;
 using _Project.Scripts.Core.Save;
 using _Project.Scripts.Gameplay.Background;
 using _Project.Scripts.Gameplay.GameGrid;
@@ -8,6 +9,7 @@ namespace _Project.Scripts.Gameplay.GameLevel
 {
     public class LevelLoadService
     {
+        private readonly RestartSceneService _restartSceneService;
         private readonly SaveService _saveService;
         private readonly BackgroundImageService _backgroundImageService;
         private readonly BalloonsSpawnService _balloonsSpawnService;
@@ -16,8 +18,10 @@ namespace _Project.Scripts.Gameplay.GameLevel
 
         public GridModel InitialGrid { get; private set; }
 
-        public LevelLoadService(GameSettings gameSettings, 
+        public LevelLoadService(
+            GameSettings gameSettings, 
             SaveService saveService, 
+            RestartSceneService restartSceneService,
             BackgroundImageService backgroundImageService, 
             BalloonsSpawnService balloonsSpawnService, 
             WorldGridService worldGridService)
@@ -27,6 +31,7 @@ namespace _Project.Scripts.Gameplay.GameLevel
             _backgroundImageService = backgroundImageService;
             _balloonsSpawnService = balloonsSpawnService;
             _worldGridService = worldGridService;
+            _restartSceneService = restartSceneService;
         }
 
         public void LoadLevel()
@@ -36,6 +41,28 @@ namespace _Project.Scripts.Gameplay.GameLevel
             _balloonsSpawnService.StartSpawning();
             InitialGrid = LoadLastGrid(currentLevel);
             _worldGridService.Init(InitialGrid.SizeX, InitialGrid.SizeY);
+        }
+
+        public void RestartLevel()
+        {
+            EraseModifiedGrid();
+            _saveService.Save();
+            
+            _restartSceneService.Restart();
+        }
+
+        public void LoadNextLevel()
+        {
+            _saveService.GameSave.CurrentLevel++;
+            EraseModifiedGrid();
+            _saveService.Save();
+            
+            _restartSceneService.Restart();
+        }
+
+        private void EraseModifiedGrid()
+        {
+            _saveService.GameSave.GridData = "";
         }
 
         private GridModel LoadLastGrid(LevelData levelData)

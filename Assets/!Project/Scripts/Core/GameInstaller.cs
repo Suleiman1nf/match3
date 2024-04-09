@@ -44,6 +44,7 @@ namespace _Project.Scripts.Core
             CommandFactoryInstaller.Install(Container);
             RestartServiceInstaller.Install(Container);
             LevelLoadServiceInstaller.Install(Container);
+            WinServiceInstaller.Install(Container);
         }
     }
 }

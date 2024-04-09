@@ -1,34 +1,27 @@
-﻿using _Project.Scripts.Core.Restart;
-using _Project.Scripts.Core.Save;
+﻿using _Project.Scripts.Gameplay.GameLevel;
 using deVoid.UIFramework;
-using UnityEngine;
 using Zenject;
 
 namespace _Project.Scripts.Core.UI.Panels
 {
     public class GamePanel : APanelController
     {
-        private RestartService _restartService;
-        private SaveService _saveService;
+        private LevelLoadService _levelLoadService;
 
         [Inject]
-        private void Construct(RestartService restartService, SaveService saveService)
+        private void Construct(LevelLoadService levelLoadService)
         {
-            _restartService = restartService;
-            _saveService = saveService;
+            _levelLoadService = levelLoadService;
         }
         
         public void Next()
         {
-            _saveService.GameSave.CurrentLevel++;
-            _saveService.GameSave.GridData = "";
-            _saveService.Save();
-            Restart();
+            _levelLoadService.LoadNextLevel();
         }
 
         public void Restart()
         {
-            _restartService.RestartLevel();
+            _levelLoadService.RestartLevel();
         }
     }
 }
